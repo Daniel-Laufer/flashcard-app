@@ -1,0 +1,12 @@
+# GET http://localhost:5000/user
+
+
+
+
+POST http://localhost:5000/user/login
+content-type: application/json
+
+{
+    "email2": "lauferkdaniel@gmail.com",
+    "password": "lunatheboss"
+}

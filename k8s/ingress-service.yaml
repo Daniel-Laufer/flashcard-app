@@ -1,0 +1,38 @@
+# remember to apply ingress-nginx to your cluster first! https://kubernetes.github.io/ingress-nginx/deploy/#docker-desktop
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-service
+
+  # configuring this service
+  annotations: 
+    # use ingress-nginx specifically
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    
+    # ex. /api/user/login => /login
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                # forward request to this cluser-ip service on its port 3000
+                name: user-management-server-cluster-ip-service
+                port:
+                  number: 5000
+          
+          - path: /api/user/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: user-management-server-cluster-ip-service
+                port:
+                  number: 5000
+          
+          

@@ -1,0 +1,29 @@
+apiVersion: skaffold/v2beta12
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./k8s/*
+build:
+  # don't push to dockerhub
+  local:
+    push: false
+  # images that skaffold will build, and will manage any containers built from this image.
+  artifacts:
+    - image: lauferdaniel/user-management-server
+      context: user_management_server
+      docker:
+        dockerfile: Dockerfile.dev
+      sync:
+        manual:
+          - src: "*.js" # anytime a js file is updated, move it to the container!
+            dest: . # where the files should be synced to inside the container. note: If the destination is a relative path, an absolute path will be inferred by prepending the path with the container’s WORKDIR. So in this case it will sync files with the /app directory in this container.
+
+
+# how does this work?
+# 1. skaffold will build the specified images listed in the "artifcats" section
+# 2. Then it will apply the k8s config files to our cluster
+# 3. When we update a js file in our user_management_server directory on our local machine, skaffold will see this and 
+#    inject the updated files into any container built from the lauferdaniel/user-management-server-skaffold image.
+
+
