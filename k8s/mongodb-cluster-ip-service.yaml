@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-cluster-ip-service
+# configuration for how this service should behave
+spec:
+  type: ClusterIP
+  selector:
+    component: mongodb
+  ports:
+    - port: 27017 # how other objects will reach this clusterip service
+      targetPort: 27017  # forward traffic to here

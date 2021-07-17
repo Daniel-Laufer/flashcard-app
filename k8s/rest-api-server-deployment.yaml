@@ -23,4 +23,9 @@ spec:
           imagePullPolicy: Never
           ports:
             - containerPort: 5000 # exposing port 5000 on container inside pod
+          env:
+            - name: MONGODB_HOST
+              value: mongodb-cluster-ip-service
+            - name: PORT
+              value: "27017"
 

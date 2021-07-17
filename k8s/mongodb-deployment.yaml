@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: mongodb
+  template:
+    metadata:
+      labels:
+        component: mongodb
+    spec:
+      containers:
+      - name: mongodb
+        image: mongo
+        ports:
+        - containerPort: 27017 # expose the default port that mongo uses
+        # env:
+        #   - name: MONGO_INITDB_ROOT_USERNAME # the name of the environment variable that postgress container is looking for
+        #     value: root
+        #   - name: MONGO_INITDB_ROOT_PASSWORD
+        #     value: example
+
+
+
+
