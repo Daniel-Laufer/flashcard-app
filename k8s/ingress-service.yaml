@@ -34,5 +34,13 @@ spec:
                 name: user-management-server-cluster-ip-service
                 port:
                   number: 5000
+                  
+          - path: /api/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: rest-api-server-cluster-ip-service
+                port:
+                  number: 5000
           
           

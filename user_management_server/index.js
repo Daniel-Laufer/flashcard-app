@@ -10,7 +10,7 @@ app.use(cors());
 
 // GET routes
 app.get("/", (req, res) => {
-    res.send("Hellfo22 world");
+    res.send("Hello from the user management server.");
 });
 
 

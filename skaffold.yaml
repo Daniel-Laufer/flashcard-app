@@ -18,6 +18,16 @@ build:
         manual:
           - src: "*.js" # anytime a js file is updated, move it to the container!
             dest: . # where the files should be synced to inside the container. note: If the destination is a relative path, an absolute path will be inferred by prepending the path with the container’s WORKDIR. So in this case it will sync files with the /app directory in this container.
+    - image: lauferdaniel/rest-api-server
+      context: rest-api-server
+      docker:
+        dockerfile: Dockerfile.dev
+      sync:
+        manual:
+          - src: "*.js" # anytime a js file is updated, move it to the container!
+            dest: . # where the files should be synced to inside the container. note: If the destination is a relative path, an absolute path will be inferred by prepending the path with the container’s WORKDIR. So in this case it will sync files with the /app directory in this container.
+
+  
 
 
 # how does this work?

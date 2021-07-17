@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: user-management-server-deployment
+  name: rest-api-server-deployment
 spec: 
   # number of pods for this deployment to manage
   replicas: 1 
   # select all pods with the name user-management-server 
   selector:
     matchLabels:
-      component: user-management-server 
-
+      component: rest-api-server
+      
   template: 
     metadata:
       labels:
-        component: user-management-server # label for each pod that is created
+        component: rest-api-server # label for each pod that is created
 
     # customize behaviour of each pod that is created
     spec:
       containers:
-        - name: user-management-server # name for a container inside this pod
-          image: lauferdaniel/user-management-server
+        - name: rest-api-server # name for a container inside this pod
+          image: lauferdaniel/rest-api-server
           imagePullPolicy: Never
           ports:
             - containerPort: 5000 # exposing port 5000 on container inside pod
