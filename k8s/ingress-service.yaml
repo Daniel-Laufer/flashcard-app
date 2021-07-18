@@ -17,16 +17,7 @@ metadata:
 spec:
   rules:
     - http:
-        paths:
-          - path: /?(.*)
-            pathType: Prefix
-            backend:
-              service:
-                # forward request to this cluser-ip service on its port 3000
-                name: user-management-server-cluster-ip-service
-                port:
-                  number: 5000
-          
+        paths:          
           - path: /api/user/?(.*)
             pathType: Prefix
             backend:
@@ -35,7 +26,7 @@ spec:
                 port:
                   number: 5000
                   
-          - path: /api/?(.*)
+          - path: /api/order/?(.*)
             pathType: Prefix
             backend:
               service:

@@ -12,6 +12,11 @@ spec:
       labels:
         component: mongodb
     spec:
+      # allow pods below to claim persistent storage
+      volumes:
+        - name: mongodb-storage
+          persistentVolumeClaim:
+            claimName: mongodb-pvc
       containers:
       - name: mongodb
         image: mongo
@@ -19,9 +24,15 @@ spec:
         - containerPort: 27017 # expose the default port that mongo uses
         # env:
         #   - name: MONGO_INITDB_ROOT_USERNAME # the name of the environment variable that postgress container is looking for
-        #     value: root
+        #  cd    value: root
         #   - name: MONGO_INITDB_ROOT_PASSWORD
         #     value: example
+        volumeMounts:
+          - name: mongodb-storage
+            mountPath: /data/db # default mongodb storage location
+            subPath: mongodb # data will be stored on in the /mongodb directory in the persistent volume
+
+
 
 
 
