@@ -23,4 +23,20 @@ spec:
           imagePullPolicy: Never
           ports:
             - containerPort: 5000 # exposing port 5000 on container inside pod
+          env:
+            - name: AWS_DEFAULT_REGION
+              valueFrom:
+                secretKeyRef:
+                  name: dynamodb-credentials
+                  key: AWS_DEFAULT_REGION
+            - name: AWS_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: dynamodb-credentials
+                  key: AWS_ACCESS_KEY
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: dynamodb-credentials
+                  key: AWS_SECRET_ACCESS_KEY
 
