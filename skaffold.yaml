@@ -11,8 +11,8 @@ build:
     push: false
   # images that skaffold will build, and will manage any containers built from this image.
   artifacts:
-    - image: lauferdaniel/user-management-server
-      context: user-management-server
+    - image: lauferdaniel/auth-server
+      context: auth-server
       docker:
         dockerfile: Dockerfile.dev
       sync:
@@ -34,7 +34,7 @@ build:
 # how does this work?
 # 1. skaffold will build the specified images listed in the "artifcats" section
 # 2. Then it will apply the k8s config files to our cluster
-# 3. When we update a js file in our user-management-server directory on our local machine, skaffold will see this and 
-#    inject the updated files into any container built from the lauferdaniel/user-management-server-skaffold image.
+# 3. When we update a js file in our auth-server directory on our local machine, skaffold will see this and 
+#    inject the updated files into any container built from the lauferdaniel/auth-server-skaffold image.
 
 

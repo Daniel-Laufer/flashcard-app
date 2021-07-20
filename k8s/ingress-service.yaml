@@ -22,7 +22,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: user-management-server-cluster-ip-service
+                name: auth-server-cluster-ip-service
                 port:
                   number: 5000
                   

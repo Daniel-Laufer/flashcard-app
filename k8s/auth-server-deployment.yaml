@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: rest-api-server-deployment
+  name: auth-server-deployment
 spec: 
   # number of pods for this deployment to manage
   replicas: 1 
   # select all pods with the name auth-server 
   selector:
     matchLabels:
-      component: rest-api-server
-      
+      component: auth-server 
+
   template: 
     metadata:
       labels:
-        component: rest-api-server # label for each pod that is created
+        component: auth-server # label for each pod that is created
 
     # customize behaviour of each pod that is created
     spec:
       containers:
-        - name: rest-api-server # name for a container inside this pod
-          image: lauferdaniel/rest-api-server
+        - name: auth-server # name for a container inside this pod
+          image: lauferdaniel/auth-server
           imagePullPolicy: Never
           ports:
             - containerPort: 5000 # exposing port 5000 on container inside pod

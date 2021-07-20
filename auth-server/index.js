@@ -1,7 +1,5 @@
 const express = require("express");
 const cors = require("cors");
-const mongoose = require("mongoose");
-const admin = mongoose.mongo.Admin;
 
 
 // express app set up
@@ -11,9 +9,6 @@ app.use(cors());
 
 
 // connecting to postgres
-
-
-// Postgres Client Setup
 const { Pool } = require("pg");
 const pgClient = new Pool({
   user: process.env.PG_USER,
@@ -24,9 +19,8 @@ const pgClient = new Pool({
 });
 
 pgClient.on("connect", (client) => {
-    console.log("connected to db");
   client
-    .query("CREATE TABLE IF NOT EXISTS orders (number INT)")
+    .query("CREATE TABLE IF NOT EXISTS users (number INT)")
     .catch((err) => console.error(err));
 });
 
@@ -36,20 +30,12 @@ pgClient.on("connect", (client) => {
 // GET routes
 app.get("/", async (req, res) => {
     try{
-        const orders = await pgClient.query("SELECT * from orders");
-        res.status(201).send(orders.rows);
+        res.status(201).send({"success": true});
     }
     catch (err){
         res.status(400).send(err);
     }
 
-});
-
-app.post("/", async (req, res) => {
-    console.log("posting");
-    await pgClient.query("INSERT INTO orders(number) VALUES($1)", [5]);
-
-    res.send({ working: true });
 });
 
 
