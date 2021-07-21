@@ -30,8 +30,26 @@ pgClient.on("connect", () => {
 });
 
 
-/*======= ROUTES =======*/
+// importing swagger route
+require("./routes/swagger-docs")(app);
 
+
+
+
+
+
+/*======= ROUTES =======*/
+/**
+ * @swagger
+ * /register:
+ *  post:
+ *      description: create a new user and log them in (return a jwt auth token)
+ *      responses:
+ *          "200":
+ *              description: success
+ *          "500":
+ *              description: internal server error
+ */
 app.post("/register", async (req, res) => {
     const user_validation_schema = Joi.object({
         password: Joi.string().min(5).required(),
