@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS toppings CASCADE;
 CREATE TABLE "users" (
   "id" SERIAL PRIMARY KEY,
   "payment_info_id" int,
-  "email" varchar NOT NULL,
+  "email" varchar NOT NULL UNIQUE,
   "password" varchar NOT NULL,
   "location_id" int
 );

@@ -1,12 +1,13 @@
 const express = require("express");
 const cors = require("cors");
 const Joi = require("joi");
-const jwt = require("jsonwebtoken");
-
-// bcrypt setup
+const jwt = require("jsonwebtoken"); 
 const bcrypt = require('bcrypt');
 const bcrypt_salt_rounds = 10;
 
+
+// creating a connection to the postgres db
+const pgClient = require("./misc/postgres-client-setup");
 
 
 // express app set up
@@ -14,28 +15,19 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-
-// configuring a client to connect to postgres
-const { Pool } = require("pg");
-const pgClient = new Pool({
-  user: process.env.PG_USER,
-  host: process.env.PG_HOST,
-  database: process.env.PG_DB,
-  password: process.env.PG_PASSWORD,
-  port: process.env.PG_PORT,
-});
-
-pgClient.on("connect", () => {
-    console.log("client onnected to postgres db.")
-});
+// setting up swagger docs
+require("./misc/swagger-docs-setup")(app);
 
 
-// importing swagger route
-require("./routes/swagger-docs")(app);
+// importing and configuring middleware 
+const middleware = require("./middleware.js");
+app.use(middleware.authorize);
 
 
-
-
+// common function used by both routes below
+const issueNewAuthToken = (user) => {
+    return jwt.sign({id: user.id, is_admin: user.is_admin }, process.env.JWT_SECRET_KEY);
+}
 
 
 /*======= ROUTES =======*/
@@ -43,16 +35,26 @@ require("./routes/swagger-docs")(app);
  * @swagger
  * /register:
  *  post:
- *      description: create a new user and log them in (return a jwt auth token)
+ *      tags:
+ *          - auth-server-api
+ *      description: create a new user specifed by the (email, password) pair and log them in (by return a jwt auth token)
+ *      parameters:
+ *          - name: email
+ *            required: true
+ *          - name: password 
+ *            required: true
+ *            description: password must consist of a minimum of 6 characters.
  *      responses:
  *          "200":
  *              description: success
+ *          "400":
+ *              description: bad parameters provided
  *          "500":
  *              description: internal server error
  */
 app.post("/register", async (req, res) => {
     const user_validation_schema = Joi.object({
-        password: Joi.string().min(5).required(),
+        password: Joi.string().min(6).required(),
         email: Joi.string().required().email(),
     });
 
@@ -67,7 +69,7 @@ app.post("/register", async (req, res) => {
 
     // add user to database
     const text = 'INSERT INTO users(email, password) VALUES($1, $2) RETURNING *'
-    const values = [hashed_password, email];
+    const values = [email, hashed_password];
 
     let new_user;
     pgClient.query(text, values, (pg_err, pg_res) => {
@@ -77,30 +79,62 @@ app.post("/register", async (req, res) => {
         }
         new_user = pg_res.rows[0];
 
-        // create and return a jwt auth token for this user
-        const token = jwt.sign({id: new_user.id, is_admin: new_user.is_admin }, process.env.JWT_SECRET_KEY);
-        res.header("auth-token", token).send({id: new_user.id});
+        
     });
+    const token = issueNewAuthToken(new_user);
+    res.header("auth-token", token).send({id: new_user.id});
 
 });
 
 
 
-
+/**
+ * @swagger
+ * /login:
+ *  post:
+ *      tags:
+ *          - auth-server-api
+ *      description: log the user specifed by the (email, password) pair in (by return a jwt auth token)
+ *      parameters:
+ *          - name: email
+ *            required: true
+ *          - name: password 
+ *            required: true
+ *            description: password must consist of a minimum of 6 characters.
+ *      responses:
+ *          "200":
+ *              description: success
+ *          "400":
+ *              description: bad parameters provided
+ *          "500":
+ *              description: internal server error
+ */
 
 app.post("/login", async (req, res) => {
-    // need email and password
-    const email = req.body.email;
-    const password = req.body.password;
+    const user_validation_schema = Joi.object({
+        password: Joi.string().min(6).required(),
+        email: Joi.string().required().email(),
+    });
+
+    const {error} = user_validation_schema.validate(req.body);
+    if(error) return res.status(400).send(error.details[0].message);
+
+    // deconstructing the request body
+    const {password, email} = req.body;
+
+    const queryResponse = await pgClient.query("SELECT * FROM users WHERE email=$1", [email]);
+    const foundUser = queryResponse.rows[0];
+
+    if(!foundUser || foundUser == [])
+        return res.status(400).send("this user does not exist.");
+
+    const isValidPassword = await bcrypt.compare(password, foundUser.password);
+
+    if(!isValidPassword) return res.status(401).send("incorect password.");
 
 
-
-    try{
-        res.status(201).send({"success": true});
-    }
-    catch (err){
-        res.status(400).send(err);
-    }
+    const token = issueNewAuthToken(foundUser);
+    res.header("auth-token", token).send({id: foundUser.id}); 
 
 });
 
@@ -108,6 +142,7 @@ app.post("/login", async (req, res) => {
 
 
 
+// start the server
 app.listen(5000, (err) => {
     console.log("Listening on port 5000.");
 });
