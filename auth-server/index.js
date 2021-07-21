@@ -21,7 +21,6 @@ require("./misc/swagger-docs-setup")(app);
 
 // importing and configuring middleware 
 const middleware = require("./middleware.js");
-app.use(middleware.authorize);
 
 
 // common function used by both routes below
@@ -138,6 +137,7 @@ app.post("/login", async (req, res) => {
 
 });
 
+// create route to retrieve all orders made by a customer with a specific email. 
 
 
 
