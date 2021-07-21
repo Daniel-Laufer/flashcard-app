@@ -17,15 +17,21 @@ metadata:
 spec:
   rules:
     - http:
-        paths:          
+        paths: 
+          - path: /?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: front-end-server-cluster-ip-service
+                port:
+                  number: 3000
           - path: /api/user/?(.*)
             pathType: Prefix
             backend:
               service:
                 name: auth-server-cluster-ip-service
                 port:
-                  number: 5000
-                  
+                  number: 5000   
           - path: /api/order/?(.*)
             pathType: Prefix
             backend:
@@ -33,7 +39,7 @@ spec:
                 name: rest-api-server-cluster-ip-service
                 port:
                   number: 5000
-
+          
                   
 
           

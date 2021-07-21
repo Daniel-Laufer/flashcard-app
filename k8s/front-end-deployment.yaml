@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: front-end-server-deployment
+# configuration for how this deployment should behave
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: front-end 
+  template:
+    metadata:
+      labels:
+        component: front-end
+    # customize behaviour of each pod that is created
+    spec: 
+      containers:
+        - name: client
+          image: lauferdaniel/front-end-server
+          ports:
+            - containerPort: 3000 # expose port 3000 
+
+
+
+
+
+
+
+
