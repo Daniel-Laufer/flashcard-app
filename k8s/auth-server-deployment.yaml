@@ -49,4 +49,10 @@ spec:
                 secretKeyRef:
                   name: postgres-secret
                   key: PG_PORT
+            - name: JWT_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_SECRET_KEY
+              
 

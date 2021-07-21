@@ -1,7 +1,5 @@
 const express = require("express");
 const cors = require("cors");
-const mongoose = require("mongoose");
-const admin = mongoose.mongo.Admin;
 
 
 // express app set up
