@@ -33,8 +33,12 @@ build:
         dockerfile: Dockerfile.dev
       sync:
         manual:
-          - src: "*.js" # anytime a js file is updated, move it to the container!
-            dest: . # where the files should be synced to inside the container. note: If the destination is a relative path, an absolute path will be inferred by prepending the path with the container’s WORKDIR. So in this case it will sync files with the /app directory in this container.
+          - src: "src/**/*.js" # anytime a js file is updated, move it to the container!
+            dest: .
+          - src: "src/**/*.css"
+            dest: .
+          - src: "src/**/*.html"
+            dest: .
 
   
 
