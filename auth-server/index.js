@@ -29,7 +29,47 @@ const issueNewAuthToken = (user) => {
 }
 
 
+
+
+
 /*======= ROUTES =======*/
+/**
+ * @swagger
+ * /authorize:
+ *  post:
+ *      tags:
+ *          - auth-server-api
+ *      description: authorize a user and return their respective permissions.
+ *      parameters:
+ *          -  name: auth-token
+ *             in: header
+ *             required: true
+ *      responses:
+ *          "200":
+ *              description: success
+ *          "400":
+ *              description: unauthorized
+ *          "401":
+ *              description: invalid jwt token
+ */
+ app.get("/authorize", async (req, res) => {
+    const token = req.get("auth-token");
+   
+    if (!token) return res.status(401).send("Unauthorized");
+    try{
+        const verification_details = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        return res.send(verification_details);
+    }
+    catch (error){ res.status(400).send("invalid jwt token"); }
+    
+});
+
+
+
+
+
+
+
 /**
  * @swagger
  * /register:
@@ -39,9 +79,11 @@ const issueNewAuthToken = (user) => {
  *      description: create a new user specifed by the (email, password) pair and log them in (by return a jwt auth token)
  *      parameters:
  *          - name: email
+ *            in: body
  *            required: true
  *          - name: password 
  *            required: true
+ *            in: body
  *            description: password must consist of a minimum of 6 characters.
  *      responses:
  *          "200":
@@ -73,16 +115,13 @@ app.post("/register", async (req, res) => {
     let new_user;
     pgClient.query(text, values, (pg_err, pg_res) => {
         if (pg_err){
-            console.log(pg_err.stack);
             return res.status(500).send(pg_err);
         }
         new_user = pg_res.rows[0];
-
-        
+        const token = issueNewAuthToken(new_user);
+        res.header("auth-token", token).send({id: new_user.id});        
     });
-    const token = issueNewAuthToken(new_user);
-    res.header("auth-token", token).send({id: new_user.id});
-
+    
 });
 
 
@@ -96,9 +135,11 @@ app.post("/register", async (req, res) => {
  *      description: log the user specifed by the (email, password) pair in (by return a jwt auth token)
  *      parameters:
  *          - name: email
+ *            in: body
  *            required: true
  *          - name: password 
  *            required: true
+ *            in: body
  *            description: password must consist of a minimum of 6 characters.
  *      responses:
  *          "200":
@@ -138,8 +179,6 @@ app.post("/login", async (req, res) => {
 });
 
 // create route to retrieve all orders made by a customer with a specific email. 
-
-
 
 
 // start the server
