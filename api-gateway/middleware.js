@@ -43,7 +43,7 @@ module.exports = {
                 const status = err.response.status;
                 return res.status(status).send(err.response.data);
             }
-            console.log(err);
+            // console.log(err);
             return res.send(err);
             
         }

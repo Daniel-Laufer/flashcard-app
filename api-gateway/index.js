@@ -20,10 +20,7 @@ const addresses = {
 };
 
 
-
-
-
-/*======= ROUTES =======*/
+/*======= ATUH-SERVER ROUTES =======*/
 /**
  * @swagger
  * /login:
@@ -57,8 +54,11 @@ app.post("/login", async (req, res) => {
         res.status(response.status).header("auth-token", response.headers["auth-token"]).send(response.data);
     }
     catch (err){
-        const status = err.response.status;
-        res.status(status).send(err.response.data);
+        if(err.response){
+            const status = err.response.status;
+            return res.status(status).send(err.response.data);
+        }
+        return res.status(500).send(err);
     }
 });
 
@@ -97,12 +97,101 @@ app.post("/login", async (req, res) => {
         res.status(response.status).header("auth-token", response.headers["auth-token"]).send(response.data);
     }
     catch (err){
-        const status = err.response.status;
-        res.status(status).send(err.response.data);
+        if(err.response){
+            const status = err.response.status;
+            return res.status(status).send(err.response.data);
+        }
+        return res.status(500).send(err);
     }
 
 
 });
+/*======= REST-API ROUTES =======*/
+
+/*======= ROUTES =======*/
+/**
+ * @swagger
+ * /locations:
+ *  get:
+ *      tags:
+ *          - api
+ *      description: get all locations
+ *      responses:
+ *          "200":
+ *              description: success
+ *          "400":
+ *              description: unauthorized
+ *          "401":
+ *              description: invalid jwt token
+ *          "500":
+ *              description: internal server error
+ */
+ app.get("/locations", middleware.authorize, async (req, res) => {
+
+    try{
+        const response = await axios.get(addresses["rest-api-server"].concat("/locations"));
+        res.status(response.status).send(response.data);
+    }
+    catch (err){
+        if(err.response){
+            const status = err.response.status;
+            return res.status(status).send(err.response.data);
+        }
+        return res.status(500).send(err);
+    }
+});
+
+
+/**
+ * @swagger
+ * /locations:
+ *  post:
+ *      tags:
+ *          - api
+ *      description: add information about a new location to the database
+ *      parameters:
+ *          - name: auth-token
+ *            in: header
+ *          - name: name
+ *            in: body
+ *            required: true
+ *            description: name of this location. For example, '220 North Service Rd W, Oakville, Ontario'
+ *          - name: password 
+ *            required: true
+ *            in: body
+ *            description: the hours of operation of this location. For example, '9-5'
+ *      responses:
+ *          "200":
+ *              description: success
+ *          "400":
+ *              description: invalid data provided in body
+ *          "500":
+ *              description: internal server error
+ */
+ app.post("/locations", middleware.authorize, async (req, res) => {
+    const payload = {
+        name: req.body.name,
+        open_hours: req.body.open_hours
+    }
+    try{
+        const response = await axios.post(addresses["rest-api-server"].concat("/locations"), payload);
+        res.send(response.data);
+    }
+    catch (err){
+        if(err.response){
+            const status = err.response.status;
+            return res.status(status).send(err.response.data);
+        }
+        return res.status(500).send(err);
+    }
+
+
+});
+
+
+
+
+
 
 
 // a little route to test the middleware
