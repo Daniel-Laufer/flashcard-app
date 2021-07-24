@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway-deployment
+spec: 
+  # number of pods for this deployment to manage
+  replicas: 1 
+  # select all pods with the name auth-server 
+  selector:
+    matchLabels:
+      component: api-gateway 
+
+  template: 
+    metadata:
+      labels:
+        component: api-gateway # label for each pod that is created
+
+    # customize behaviour of each pod that is created
+    spec:
+      containers:
+        - name: api-gateway # name for a container inside this pod
+          image: lauferdaniel/api-gateway
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5000 # exposing port 5000 on container inside pod
+          env:
+            - name: AUTH_SERVER_IP
+              value: auth-server-cluster-ip-service
+            - name: REST_API_SERVER_IP
+              value: rest-api-server-cluster-ip-service
+              
+

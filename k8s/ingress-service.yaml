@@ -25,20 +25,14 @@ spec:
                 name: front-end-server-cluster-ip-service
                 port:
                   number: 3000
-          - path: /api/user/?(.*)
+          - path: /api/?(.*)
             pathType: Prefix
             backend:
               service:
-                name: auth-server-cluster-ip-service
+                name: api-gateway-cluster-ip-service
                 port:
                   number: 5000   
-          - path: /api/order/?(.*)
-            pathType: Prefix
-            backend:
-              service:
-                name: rest-api-server-cluster-ip-service
-                port:
-                  number: 5000
+
           
                   
 
