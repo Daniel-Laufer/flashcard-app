@@ -1,12 +1,24 @@
-# GET http://localhost:5000/user
-
-
-
-
-POST http://localhost:5000/user/login
-content-type: application/json
+{
+    "user_id": 1,
+    "location_id": 1,
+    "payment_info_id": 1,
+    "status": "ready for pickup",
+    "created_at": "2021-07-25T01:18:10.896Z",
+    "size": "L",
+    "toppings": "extra cheese, pepperoni, pineapple",
+    "phone_number": "905-210-8418",
+    "address": "2102 Hello Drive, Oakville ON"
+}
 
 {
-    "email2": "lauferkdaniel@gmail.com",
-    "password": "lunatheboss"
+    "full_name": "Daniel Laufer",
+    "card_number": "1111-1111-1111-1111",
+    "cvv": 152,
+    "expiration_date": "01/2051",
+    "postal_code": "L6T8C0",
+}
+
+{
+    "name": "1550 Nottinghill Gate, Oakville",
+    "open_hours": "8-4"
 }
