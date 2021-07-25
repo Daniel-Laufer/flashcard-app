@@ -1,24 +1,24 @@
+
+// /login and /register
 {
-    "user_id": 1,
-    "location_id": 1,
-    "payment_info_id": 1,
-    "status": "ready for pickup",
-    "created_at": "2021-07-25T01:18:10.896Z",
-    "size": "L",
-    "toppings": "extra cheese, pepperoni, pineapple",
-    "phone_number": "905-210-8418",
-    "address": "2102 Hello Drive, Oakville ON"
+    "username": "daniel",
+    "password": "daniel"
 }
 
+
+// /flashcard_collections
 {
-    "full_name": "Daniel Laufer",
-    "card_number": "1111-1111-1111-1111",
-    "cvv": 152,
-    "expiration_date": "01/2051",
-    "postal_code": "L6T8C0",
+    "title": "English Word Definitions",
+    "flashcards": [
+        {
+            "front_text": "Formidable",
+            "back_text": "inspiring fear or respect through being impressively large, powerful, intense, or capable."
+        },
+        {
+            "front_text": "Palpable",
+            "back_text": "(of a feeling or atmosphere) so intense as to seem almost tangible"
+        }
+    ]
 }
 
-{
-    "name": "1550 Nottinghill Gate, Oakville",
-    "open_hours": "8-4"
-}
+

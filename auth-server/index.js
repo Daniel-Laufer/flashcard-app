@@ -25,7 +25,17 @@ const middleware = require("./middleware.js");
 
 // common function used by both routes below
 const issueNewAuthToken = (user) => {
-    return jwt.sign({id: user.id, is_admin: user.is_admin }, process.env.JWT_SECRET_KEY);
+    return jwt.sign({user_id: user.id }, process.env.JWT_SECRET_KEY);
+}
+
+function query_func(client, query_text, query_payload) {
+    return new Promise((resolve, reject) => {
+        client.query(query_text, query_payload, (err,res) => {
+            if(err) reject(err);
+            resolve(res);
+            
+        });
+    });
 }
 
 
@@ -76,9 +86,9 @@ const issueNewAuthToken = (user) => {
  *  post:
  *      tags:
  *          - auth-server-api
- *      description: create a new user specifed by the (email, password) pair and log them in (by return a jwt auth token)
+ *      description: create a new user specifed by the (username, password) pair and log them in (by return a jwt auth token)
  *      parameters:
- *          - name: email
+ *          - name: username
  *            in: body
  *            required: true
  *          - name: password 
@@ -95,22 +105,23 @@ const issueNewAuthToken = (user) => {
  */
 app.post("/register", async (req, res) => {
     const user_validation_schema = Joi.object({
-        password: Joi.string().min(6).required(),
-        email: Joi.string().required().email(),
+        password: Joi.string().min(5).required(),
+        username: Joi.string().required().min(5),
     });
 
     const {error} = user_validation_schema.validate(req.body);
     if(error) return res.status(400).send(error.details[0].message);
 
     // deconstructing the request body
-    const {password, email} = req.body;
+    const {password, username} = req.body;
 
     // hashing password. Good explanation of bcrypt here: https://www.reddit.com/r/javascript/comments/9xdri9/how_does_bcrypt_work_it_feels_like_magic/e9rsazc?utm_source=share&utm_medium=web2x&context=3
     const hashed_password = await bcrypt.hash(password, bcrypt_salt_rounds);
+    // console.log(hashed_password.length);
 
     // add user to database
-    const text = 'INSERT INTO users(email, password) VALUES($1, $2) RETURNING *'
-    const values = [email, hashed_password];
+    const text = 'INSERT INTO users(username, password) VALUES($1, $2) RETURNING *'
+    const values = [username, hashed_password];
 
     let new_user;
     pgClient.query(text, values, (pg_err, pg_res) => {
@@ -132,9 +143,9 @@ app.post("/register", async (req, res) => {
  *  post:
  *      tags:
  *          - auth-server-api
- *      description: log the user specifed by the (email, password) pair in (by return a jwt auth token)
+ *      description: log the user specifed by the (username, password) pair in (by return a jwt auth token)
  *      parameters:
- *          - name: email
+ *          - name: username
  *            in: body
  *            required: true
  *          - name: password 
@@ -152,17 +163,17 @@ app.post("/register", async (req, res) => {
 
 app.post("/login", async (req, res) => {
     const user_validation_schema = Joi.object({
-        password: Joi.string().min(6).required(),
-        email: Joi.string().required().email(),
+        password: Joi.string().min(5).required(),
+        username: Joi.string().min(5).required(),
     });
 
     const {error} = user_validation_schema.validate(req.body);
     if(error) return res.status(400).send(error.details[0].message);
 
     // deconstructing the request body
-    const {password, email} = req.body;
+    const {password, username} = req.body;
 
-    const queryResponse = await pgClient.query("SELECT * FROM users WHERE email=$1", [email]);
+    const queryResponse = await pgClient.query("SELECT * FROM users WHERE username=$1", [username]);
     const foundUser = queryResponse.rows[0];
 
     if(!foundUser || foundUser == [])
@@ -177,8 +188,6 @@ app.post("/login", async (req, res) => {
     res.header("auth-token", token).send({id: foundUser.id}); 
 
 });
-
-// create route to retrieve all orders made by a customer with a specific email. 
 
 
 // start the server
