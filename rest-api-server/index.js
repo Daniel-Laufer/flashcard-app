@@ -31,20 +31,29 @@ function query_func(client, query_text, query_payload) {
 
 
  app.get("/flashcard_collections", async (req, res) => {
-    query_func(pgClient, `SELECT * FROM flashcard_collection;`, [])
-        .then((query_res) => res.send(query_res.rows))
+    
+    const request_authorization_details = JSON.parse(req.headers["authorization_details"]);
+    
+    if(!request_authorization_details) return res.status(500).send("missing authorization_details header");
+    
+    const request_user_id = request_authorization_details["user_id"];
+
+    if(!request_user_id) return res.status(500).send("missing user_id property in authorization_details header object");
+
+    query_func(pgClient, `SELECT flashcard_collection.*, users.username, users.profile_picture_url
+                          FROM flashcard_collection JOIN users ON flashcard_collection.user_id=users.id `, [])
+        .then((query_res) => {
+            // remove the rows that this user doesn't have access to
+            const filtered_rows = query_res.rows.filter((row) => row["user_id"] == request_user_id || row["public"] == true);
+            return res.send(filtered_rows);
+        })
         .catch((err) => res.status(500).send(err));
 });
 
 
 
 
- app.get("/flashcard_collections/:user_id", async (req, res) => {
-    query_func(pgClient, `SELECT * FROM flashcard_collection WHERE user_id=${req.params.user_id};`, [])
-        .then((query_res) => res.send(query_res.rows))
-        .catch((err) => res.status(500).send(err));
-});
-
+ 
 
 
 
@@ -78,6 +87,35 @@ function query_func(client, query_text, query_payload) {
         .then((query_response) => res.status(201).send({id: query_response.rows[0]["collection_id"]}))
         .catch((err)=> res.status(500).send(err));
    
+});
+
+
+
+
+
+app.get("/flashcards/:flashcard_collection_id", async (req, res) => {
+    
+    query_func(pgClient, `SELECT * FROM flashcard_collection WHERE id=${req.params.flashcard_collection_id};`, [])
+        .then((query_res) => {
+            const request_authorization_details = JSON.parse(req.headers["authorization_details"]);
+            if(!request_authorization_details) return res.status(500).send("missing authorization_details header");
+            
+            const request_user_id = request_authorization_details["user_id"];
+
+            if(!request_user_id) return res.status(500).send("missing user_id property in authorization_details header object");
+
+
+            // check to see if user has aceess to this
+            // either if they are the owner of the collection, or the collection is publically viewable
+            const row = query_res.rows[0];
+            if(row["user_id"] == request_user_id || row["public"] == true)
+                query_func(pgClient, `SELECT * FROM flashcard WHERE collection_id=${req.params.flashcard_collection_id};`, [])
+                    .then((result) => res.send(result.rows));
+            else
+                return res.status(401).send([]);
+            
+        })
+        .catch((err) => res.status(500).send(err));
 });
 
 

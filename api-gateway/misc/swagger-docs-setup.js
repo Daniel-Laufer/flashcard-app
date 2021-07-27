@@ -8,11 +8,11 @@ module.exports = (app) => {
     const swaggerOptions = {
         swaggerDefinition: {
             info: {
-                title: "Kubernetes Pizza App's Offical API Documentation",
-                description: "The offical documentation for the API used by the Kubernetes Pizza App created by Daniel Laufer. A link to the github repo can be found here: https://github.com/Daniel-Laufer/kubernetes_pizza_app",
+                title: "The Flashcard App's Offical API Documentation",
+                description: "The offical documentation for the API used by the Flashcard App created by Daniel Laufer. You can view the gitub repository for this project here:  https://github.com/Daniel-Laufer/flashcard-app",
             },
         },
-        apis: ["index.js"]
+        apis: ["index.js", "./routes/*.js"]
     };
 
     const swaggerDocs = swaggerJsDoc(swaggerOptions);

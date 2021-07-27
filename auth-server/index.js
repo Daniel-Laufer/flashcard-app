@@ -25,7 +25,7 @@ const middleware = require("./middleware.js");
 
 // common function used by both routes below
 const issueNewAuthToken = (user) => {
-    return jwt.sign({user_id: user.id }, process.env.JWT_SECRET_KEY);
+    return jwt.sign({user_id: user.id }, process.env.JWT_SECRET_KEY, {expiresIn:"20m"});
 }
 
 function query_func(client, query_text, query_payload) {
