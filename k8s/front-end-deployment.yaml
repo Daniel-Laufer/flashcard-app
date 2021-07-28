@@ -19,6 +19,11 @@ spec:
           image: lauferdaniel/front-end-server
           ports:
             - containerPort: 3000 # expose port 3000 
+          env:
+            - name: REACT_APP_API_GATEWAY_IP
+              value: api-gateway-cluster-ip-service
+            - name : REACT_APP_waddup
+              value: "daniel"
 
 
 

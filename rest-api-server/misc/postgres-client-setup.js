@@ -8,10 +8,6 @@ const pgClient = new Pool({
   port: process.env.PG_PORT,
 });
 
-pgClient.on("connect", () => {
-    console.log("client onnected to postgres db.")
-});
-
 
 
 module.exports = pgClient;

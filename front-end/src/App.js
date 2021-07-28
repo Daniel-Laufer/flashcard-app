@@ -1,13 +1,26 @@
 import './App.css';
-import SignInPage from "./components/SignInPage/SignInPage";
-import SignUpPage from "./components/SignUpPage/SignUpPage";
+import LogInPage from "./components/LogInPage/LogInPage";
+import RegistrationPage from "./components/RegistrationPage/RegistrationPage";
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
+
 
 function App() {
   return (
-    <div className="App">
-      <SignInPage/>
-      {/* <SignUpPage/> */}
-    </div>
+    <Router>
+      <div className="App">
+        <Switch>
+          <Route path="/login">
+              <LogInPage/>
+          </Route>
+          <Route path="/register">
+              <RegistrationPage/>
+          </Route>    
+          <Route path="/">
+              heyo
+          </Route>      
+        </Switch>
+      </div>
+    </Router>
   );
 }
 

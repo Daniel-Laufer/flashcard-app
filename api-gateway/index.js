@@ -4,7 +4,7 @@ const cors = require("cors");
 // express app set up
 const app = express();
 app.use(express.json());
-app.use(cors());
+
 
 
 // setting up swagger docs
@@ -20,6 +20,8 @@ const flashcardRoutes = require("./routes/Flashcards");
 app.use("/", authRoutes);
 app.use("/", flashcardCollectionRoutes);
 app.use("/", flashcardRoutes);
+
+app.use(cors());
 
 
 // start the server

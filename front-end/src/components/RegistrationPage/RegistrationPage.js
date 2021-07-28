@@ -12,7 +12,7 @@ import Container from '@material-ui/core/Container';
 import { red } from '@material-ui/core/colors';
 
 // css
-import "./SignUpPage.css"
+import "./RegistrationPage.css"
 
 
 function Copyright() {
@@ -66,7 +66,7 @@ const theme = createTheme({
   },
 });
 
-export default function SignUpPage() {
+export default function RegistrationPage() {
   const classes = useStyles();
 
   return (

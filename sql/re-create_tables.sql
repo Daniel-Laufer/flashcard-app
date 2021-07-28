@@ -11,7 +11,9 @@ CREATE TABLE flashcard_collection(
   user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   title TEXT NOT NULL,
   public BOOLEAN DEFAULT FALSE,
-  rating int
+  rating int,
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMP NOT NULL DEFAULT NOW() 
 );
 
 CREATE TABLE flashcard(
@@ -25,6 +27,17 @@ CREATE TABLE flashcard(
   updated_at TIMESTAMP NOT NULL DEFAULT NOW() 
 );
 
+
+
+
+
+SELECT flashcard_collection.*, users.username, users.profile_picture_url
+  FROM flashcard_collection JOIN users ON flashcard_collection.user_id=users.id 
+  WHERE flashcard_collection.id=19;
+
+SELECT flashcard_collection.*, users.username, users.profile_picture_url
+      FROM flashcard_collection JOIN users ON flashcard_collection.user_id=users.id 
+      WHERE flashcard_collection.id=${req.params.flashcard_collection_id};
 
 
 
