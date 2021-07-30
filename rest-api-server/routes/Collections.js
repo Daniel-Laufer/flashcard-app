@@ -62,6 +62,7 @@ var format = require('pg-format');
             // remove the rows that this user doesn't have access to
             const filtered_rows = query_res.rows.filter((row) => row["user_id"] == request_user_id || row["public"] == true);
             return res.send(filtered_rows);
+
         })
         .catch((err) => res.status(500).send(err));
 });

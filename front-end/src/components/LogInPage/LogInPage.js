@@ -1,16 +1,18 @@
+// Full disclosure, I used a free MaterialUI react template as a starting point for this component. 
+// These templates can be found here: https://material-ui.com/getting-started/templates/
 
-import React, { useEffect, useState } from 'react';
+
+import React, {useState } from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles, ThemeProvider, createTheme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { red } from '@material-ui/core/colors';
 import { Alert } from '@material-ui/lab';
+import { useHistory } from "react-router-dom";
 
 // css
 import "./LogInPage.css";
@@ -23,20 +25,6 @@ import axios from 'axios';
 
 
 
-
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Daniel Laufer's Flashcard App
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -56,27 +44,23 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
-    backgroundColor: "#ff0000",
     color: "white",
     borderRadius: "20px"
   },
   sign_up_here_link: {
-    color: "#ff0000",
-  }
-}));
-
-
-const theme = createTheme({
-  palette: {
-    primary: red,
+    color: "#303f9f",
   },
-});
+  heroButtons: {
+    marginTop: theme.spacing(4),
+  },
+}));
 
 export default function LogInPage() {
   const classes = useStyles();
   const [formData, setFormData] = useState({username: "", password: ""});
   const [errorLoggingIn, setErrorLoggingIn] = useState(false);
   const [successLoggingIn, setSuccessLoggingIn] = useState(false);
+  const history = useHistory();
 
 
 
@@ -85,7 +69,6 @@ export default function LogInPage() {
     
     event.preventDefault(); // ensure page doesn't reload 
 
-    console.log(formData);
     const payload = {
       username: formData.username,
       password: formData.password
@@ -94,9 +77,12 @@ export default function LogInPage() {
     axios.post("api/login/", payload)
       .then((res) => {
         const token = res.headers["auth-token"];
+        const user_id = res.data["id"];
         localStorage.setItem("auth-token", token);
+        localStorage.setItem("user_id", user_id);
         setErrorLoggingIn(false);
         setSuccessLoggingIn(true);
+        setTimeout(() => history.push("/"), 800);
       })
       .catch((err) => {
         console.log(err);
@@ -120,7 +106,7 @@ export default function LogInPage() {
         <div id="login-in-pizza-logo">
         </div>
         <form className={classes.form} onSubmit={handleSubmit} noValidate>
-        <ThemeProvider theme={theme}>
+        
             <TextField
               variant="outlined"
               margin="normal"
@@ -146,16 +132,12 @@ export default function LogInPage() {
               value={formData.password}
               onChange={handleFormDataChange}
             />
-          </ThemeProvider>
-          {/* <FormControlLabel
-            className={classes.rememberMe}
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          /> */}
+          
           <Button
             type="submit"
             fullWidth
             variant="contained"
+            color="primary"
             className={classes.submit}
           >
             Sign In
@@ -170,16 +152,13 @@ export default function LogInPage() {
           <Grid container>
             <Grid item>
             Don't have an Account?
-              <Link href="#" variant="body2">
+              <Link onClick={() => history.push("/register")} variant="body2">
               <span className={classes.sign_up_here_link}>{" Sign up here!"}</span>
               </Link>
             </Grid>
           </Grid>
         </form>
       </div>
-      <Box mt={8}>
-        <Copyright />
-      </Box>
     </Container>
   );
 }

@@ -1,7 +1,11 @@
 import './App.css';
 import LogInPage from "./components/LogInPage/LogInPage";
 import RegistrationPage from "./components/RegistrationPage/RegistrationPage";
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import CollectionDisplay from './components/CollectionDisplay/CollectionDisplay';
+import CollectionCreator from './components/CollectionCreator/CollectionCreator';
+
+
 
 
 function App() {
@@ -14,9 +18,12 @@ function App() {
           </Route>
           <Route path="/register">
               <RegistrationPage/>
-          </Route>    
+          </Route>   
+          <Route path="/createNewCollection">
+            <CollectionCreator/>
+          </Route> 
           <Route path="/">
-              heyo
+              <CollectionDisplay/>
           </Route>      
         </Switch>
       </div>

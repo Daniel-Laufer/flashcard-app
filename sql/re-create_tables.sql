@@ -12,8 +12,11 @@ CREATE TABLE flashcard_collection(
   title TEXT NOT NULL,
   public BOOLEAN DEFAULT FALSE,
   rating int,
+  numRatings INT DEFAULT 0,
+  sumRatings INT DEFAULT 0,
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-  updated_at TIMESTAMP NOT NULL DEFAULT NOW() 
+  updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  description TEXT
 );
 
 CREATE TABLE flashcard(

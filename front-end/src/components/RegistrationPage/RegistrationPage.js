@@ -1,32 +1,24 @@
+// Full disclosure, I used a free MaterialUI react template as a starting point for this component. 
+// These templates can be found here: https://material-ui.com/getting-started/templates/
 
-import React from 'react';
+import React, {useState } from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles, ThemeProvider, createTheme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { red } from '@material-ui/core/colors';
+import { Alert } from '@material-ui/lab';
+import { useHistory } from "react-router-dom";
 
-// css
-import "./RegistrationPage.css"
+
+import axios from 'axios';
 
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Daniel Laufer's Flashcard App
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+
+
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -46,28 +38,61 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
-    backgroundColor: "#ff0000",
     color: "white",
     borderRadius: "20px"
   },
-  sign_up_here_link: {
-    color: "#ff0000",
-  },
-  textField: {
-    marginTop: 15,
-    marginBottom: 15
-  },
+  sign_in_here_link: {
+    color: "#303f9f",
+  }
 }));
 
 
-const theme = createTheme({
-  palette: {
-    primary: red,
-  },
-});
-
 export default function RegistrationPage() {
   const classes = useStyles();
+  const [formData, setFormData] = useState({username: "", password: "", confirmPassword: ""});
+  const [errorRegistering, setErrorRegistering] = useState(false);
+  const [successRegistering, setSuccessRegistering] = useState(false);
+  const history = useHistory();
+
+
+
+
+  const handleSubmit = (event) => {
+    
+    event.preventDefault(); // ensure page doesn't reload 
+
+    if(formData.password !== formData.confirmPassword){
+      return setErrorRegistering(false);
+    }
+    const payload = {
+      username: formData.username,
+      password: formData.password
+    }   
+    
+    axios.post("api/register/", payload)
+      .then((res) => {
+        const token = res.headers["auth-token"];
+        const user_id = res.data["id"];
+        localStorage.setItem("auth-token", token);
+        localStorage.setItem("user_id", user_id);
+        setErrorRegistering(false);
+        setSuccessRegistering(true);
+        setTimeout(() => history.push("/"), 800);
+      })
+      .catch((err) => {
+        console.log(err);
+        setErrorRegistering(true);
+        setSuccessRegistering(false);
+      });
+  };
+
+
+  const handleFormDataChange = (event) => {
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value
+    });
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -75,70 +100,71 @@ export default function RegistrationPage() {
       <div className={classes.paper}>
         <div id="login-in-pizza-logo">
         </div>
-        <form className={classes.form} noValidate>
-        <ThemeProvider theme={theme}>
-
-            
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="email"
-              label="Email Address"
-              type="email"
-              autoComplete="email"
-              id="mui-theme-provider-outlined-input"
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              autoComplete="current-password"
-              id="mui-theme-provider-outlined-input"
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="confirm-password"
-              label="Confirm Password"
-              type="password"
-              autoComplete="confirm-password"
-              id="mui-theme-provider-outlined-input"
-            />
-          </ThemeProvider>
-          {/* <FormControlLabel
-            className={classes.rememberMe}
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          /> */}
+        <form className={classes.form} onSubmit={handleSubmit} noValidate>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="username"
+            label="Username"
+            autoComplete="username"
+            value={formData.username}
+            id="mui-theme-provider-outlined-input"
+            onChange={handleFormDataChange}
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            autoComplete="current-password"
+            id="mui-theme-provider-outlined-input"
+            value={formData.password}
+            onChange={handleFormDataChange}
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="confirmPassword"
+            label="Confirm Password"
+            type="password"
+            autoComplete="confirm-password"
+            id="mui-theme-provider-outlined-input"
+            value={formData.confirmPassword}
+            onChange={handleFormDataChange}
+          />
           <Button
             type="submit"
             fullWidth
+            color="primary"
             variant="contained"
             className={classes.submit}
           >
-            Sign In
+            Sign Up
           </Button>
+          {
+            errorRegistering || successRegistering ? (
+              <Alert severity={errorRegistering ? "error": "success"}>
+                This is an error alert — check it out!
+              </Alert>
+            ) : null
+          }
           <Grid container>
             <Grid item>
-            Don't have an Account?
-              <Link href="#" variant="body2">
-              <span className={classes.sign_up_here_link}>{" Sign up here!"}</span>
+            Already have an Account?
+              <Link onClick={() => history.push("/login")} variant="body2">
+              <span className={classes.sign_in_here_link}>{" Sign in here!"}</span>
               </Link>
             </Grid>
           </Grid>
         </form>
       </div>
-      <Box mt={8}>
-        <Copyright />
-      </Box>
     </Container>
   );
 }
