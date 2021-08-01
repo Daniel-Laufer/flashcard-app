@@ -12,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import "./CollectionCard.css"
 import StarRating from '../StarRating/StarRating';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -48,6 +49,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function CollectionCard({collection}) {
   const classes = useStyles();
+  const history = useHistory();
+
 
   return (
     <Grid item key={collection.id} xs={12} sm={6} md={4}>
@@ -60,11 +63,12 @@ export default function CollectionCard({collection}) {
             <Typography>
               Created by: <strong>{collection.username}</strong><br/>
               Rating: 
-              <StarRating is_input={false}/>
+              <StarRating collection={collection} is_input={false}/><br/>
+              Description: {collection.description}
             </Typography>
           </CardContent>
           <CardActions>
-            <Button size="small" color="primary">
+            <Button onClick={() => history.push(`/collection/${collection.id}`)} size="small" color="primary">
               View
             </Button>
             {

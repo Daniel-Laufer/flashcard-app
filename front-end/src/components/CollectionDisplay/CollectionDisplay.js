@@ -11,6 +11,7 @@ import { useHistory } from "react-router-dom";
 import LogOutButton from "../LogOutButton/LogOutButton"
 import "./CollectionDisplay.css";
 import CollectionCard from '../CollectionCard/CollectionCard';
+import axios from 'axios';
 
 const sampleCollectionData = require("./sampleCollectionsList.js")
 
@@ -54,22 +55,27 @@ export default function CollectionDisplay() {
 
 
     useEffect(() => {
-        console.log(localStorage.getItem("auth-token"));
-        if(!localStorage.getItem("auth-token")) return history.push("/");
-
+      if(!localStorage.getItem("auth-token")) return history.push("/");
 
       // retrieve all collections from api
-      // ...
-
+      // const config = {
+      //   headers: {
+      //       "auth-token": localStorage.getItem("auth-token")
+      //   }
+      // }
+      
+      // axios.get("api/flashcard_collections/", config)
+      //   .then((res) => {
+      //     console.log("success!");
+      //     setCollections(res.data);
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
 
       // for now I'll just use some sample data
       setCollections(sampleCollectionData);
       
-
-
-
-
-
     }, [history]);
 
   return (

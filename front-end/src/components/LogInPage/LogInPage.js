@@ -10,15 +10,16 @@ import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles, ThemeProvider, createTheme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { red } from '@material-ui/core/colors';
 import { Alert } from '@material-ui/lab';
 import { useHistory } from "react-router-dom";
+
 
 // css
 import "./LogInPage.css";
 
 
 import axios from 'axios';
+// axios.defaults.baseURL = "http://localhost/";
 
 
 
@@ -106,7 +107,7 @@ export default function LogInPage() {
         <div id="login-in-pizza-logo">
         </div>
         <form className={classes.form} onSubmit={handleSubmit} noValidate>
-        
+
             <TextField
               variant="outlined"
               margin="normal"
