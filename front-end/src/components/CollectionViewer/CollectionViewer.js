@@ -16,6 +16,9 @@ import * as _ from 'underscore';
 import DoneOutlineIcon from '@material-ui/icons/DoneOutline';
 import Divider from '@material-ui/core/Divider';
 import "./CollectionViewer.css";
+import Carousel from 'react-material-ui-carousel'
+import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 
 
 // axios.defaults.baseURL = "http://localhost";
@@ -156,35 +159,66 @@ export default function CollectionViewer() {
               
           </div> */}
           <Divider variant="middle" />
+          <Carousel
+            autoPlay={false}
+            navButtonsAlwaysVisible={true}
+            NextIcon={<NavigateNextIcon/>}
+            PrevIcon={<NavigateBeforeIcon/>}
+            animation={"slide"}
+            interval={500}
+          >
           {
               flashcardData.map((flashcard) => {
                   return (
-                  <ReactCardFlip  key={flashcard.id} isFlipped={flashcard.isFlipped} flipDirection="horizontal">
-                      <div className="front" className="cardContainer">
-                        {flashcard.front_text}
-                        <Button
-                        className="flipButton"
-                        variant="contained"
-                        onClick={() => flipFlashcard(flashcard)}
-                        >
-                            Flip
-                        </Button>
-                    </div>
-                      <div className="back" className="cardContainer">
-                        {flashcard.back_text}
-                        <Button
-                        className="flipButton"
-                        variant="contained"
-                        onClick={() => flipFlashcard(flashcard)}
-                        >
-                            Flip
-                        </Button>
-                    </div>
-                  </ReactCardFlip>
+                          <ReactCardFlip  key={flashcard.id} isFlipped={flashcard.isFlipped} flipDirection="horizontal">
+                              <div className="front" className="cardContainer">
+                                {flashcard.front_text}
+                                <Button
+                                className="flipButton"
+                                variant="contained"
+                                onClick={() => flipFlashcard(flashcard)}
+                                >
+                                    Flip
+                                </Button>
+                                {/* <div className="NavigateNextIconContainer">
+                                  <Fab className="NavigateNextIcon" color="primary" aria-label="add" onClick={() => history.push("/")}>
+                                      <NavigateNextIcon />
+                                  </Fab>
+                                </div>
+                                <div className="NavigateBeforeIconContainer">
+                                  <Fab className="NavigateBeforeIcon" color="primary" aria-label="add" onClick={() => history.push("/")}>
+                                      <NavigateBeforeIcon />
+                                  </Fab>
+                                </div> */}
+                            </div>
+                              <div className="back" className="cardContainer">
+                                {flashcard.back_text}
+                                <Button
+                                className="flipButton"
+                                variant="contained"
+                                onClick={() => flipFlashcard(flashcard)}
+                                >
+                                    Flip
+                                </Button>
+                                {/* <div className="NavigateNextIconContainer">
+                                  <Fab className="NavigateNextIcon" aria-label="add" onClick={() => history.push("/")}>
+                                      <NavigateNextIcon />
+                                  </Fab>
+                                </div>
+                                <div className="NavigateBeforeIconContainer">
+                                  <Fab className="NavigateBeforeIcon" aria-label="add" onClick={() => history.push("/")}>
+                                      <NavigateBeforeIcon />
+                                  </Fab>
+                                </div> */}
+                            </div>
+                          </ReactCardFlip>
+
+                    );
+                  }
               )
-              })
           }
-      </div>
+          </Carousel>
+        </div>
       );
 
       //https://www.npmjs.com/package/react-material-ui-carousel

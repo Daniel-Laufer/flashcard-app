@@ -1,5 +1,6 @@
 .collectionViewerContainer{
     padding:50px;
+    height: 800px;
 }
 
 
@@ -81,3 +82,71 @@
     left: 50%;
     transform: translate(-50%, 0);
 }
+
+
+[class^='Carousel-buttonWrapper-']{
+    /* position: absolute;
+    right: -20px;
+    left:0px; */
+    right:20% !important;
+    width: 68px;
+}
+
+/* selects the 'prev' icon wrapper */
+[class^='Carousel-buttonWrapper-'] ~ [class^='Carousel-buttonWrapper-']{
+    /* position: absolute;
+    
+    /* /* left: -3%; 
+    right: 0px;  */
+    left:20% !important;
+    width: 68px;
+    /* background-color: blue; */
+}
+
+
+
+/* .NavigateNextIcon{
+    background-color: rgb(106, 106, 106) !important;
+}
+.NavigateBeforeIcon{
+    background-color: rgb(106, 106, 106) !important;
+} */
+
+
+
+@media only screen and (max-width: 960px) {
+    
+    [class^='Carousel-buttonWrapper-']{
+        /* position: absolute;
+        right: -20px;
+        left:0px; */
+        top:235px !important;
+        right:20% !important;
+        width: 68px;
+    }
+    
+    /* selects the 'prev' icon wrapper */
+    [class^='Carousel-buttonWrapper-'] ~ [class^='Carousel-buttonWrapper-']{
+        /* position: absolute;
+        
+        /* /* left: -3%; 
+        right: 0px;  */
+        top:235px !important;
+        left:20% !important;
+        width: 68px;
+        /* background-color: blue; */
+    }
+
+    [class^='Carousel-root-']{
+        height: 570px;
+    }
+
+
+
+  }
+
+
+
+
+
+

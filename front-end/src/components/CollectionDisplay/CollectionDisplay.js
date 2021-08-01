@@ -52,6 +52,7 @@ export default function CollectionDisplay() {
   const classes = useStyles();
   const history = useHistory();
   const [collections, setCollections]  = useState([sampleCollectionData]);
+  
 
 
     useEffect(() => {
