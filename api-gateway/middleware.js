@@ -8,8 +8,11 @@ const addresses = {
 module.exports = {
     authorize: async (req, res, next) => {
         try{
-            const token = req.get("authorization").split(" ")[1];
-            if(!token) return res.status(401).send("Unauthorized");
+            if(!req.get("authorization") || req.get("authorization").split(" ")[0] !== "Bearer" || req.get("authorization").split(" ").length !== 2) 
+                return res.status(400).send("authorization header should be in the format \"Bearer <token>\"")
+            
+                const token = req.get("authorization").split(" ")[1];
+
             let config = {
                 headers: {
                     "authorization": `Bearer ${token}`,
@@ -26,7 +29,7 @@ module.exports = {
                 return res.status(status).send(err.response.data);
             }
             // console.log(err);
-            return res.send(err);
+            return res.status(500).send(err);
             
         }
     },

@@ -29,7 +29,7 @@ export default function CollectionCreator() {
         event.preventDefault(); // ensure page doesn't reload 
         const config = {
             headers: {
-                "auth-token": localStorage.getItem("auth-token")
+              "authorization": `Bearer ${localStorage.getItem("auth-token")}`
             }
         }
         const payload = {
@@ -48,7 +48,12 @@ export default function CollectionCreator() {
             setTimeout(() => history.push("/"), 800);
           })
           .catch((err) => {
-            console.log(err);
+            console.log(err.response);
+            if(err.response.status == 401){
+              localStorage.removeItem("auth-token");
+              localStorage.removeItem("user_id");
+              return setTimeout(() => history.push("/login"), 800);
+            }
           });
       };
 

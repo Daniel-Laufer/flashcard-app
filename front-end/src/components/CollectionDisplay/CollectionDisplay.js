@@ -59,23 +59,30 @@ export default function CollectionDisplay() {
       if(!localStorage.getItem("auth-token")) return history.push("/");
 
       // retrieve all collections from api
-      // const config = {
-      //   headers: {
-      //       "auth-token": localStorage.getItem("auth-token")
-      //   }
-      // }
+      const config = {
+        headers: {
+            "authorization": `Bearer ${localStorage.getItem("auth-token")}`
+        }
+      }
       
-      // axios.get("api/flashcard_collections/", config)
-      //   .then((res) => {
-      //     console.log("success!");
-      //     setCollections(res.data);
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
+      axios.get("api/flashcard_collections/", config)
+        .then((res) => {
+          console.log(res);
+          
+          setCollections(res.data);
+        })
+        .catch((err) => {
+          console.log(err.response);
+          if(err.response.status == 401){
+            localStorage.removeItem("auth-token");
+            localStorage.removeItem("user_id");
+            return setTimeout(() => history.push("/login"), 800);
+          }
+          setCollections([]);
+        });
 
       // for now I'll just use some sample data
-      setCollections(sampleCollectionData);
+      // setCollections(sampleCollectionData);
       
     }, [history]);
 

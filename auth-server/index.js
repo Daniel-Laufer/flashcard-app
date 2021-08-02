@@ -21,7 +21,7 @@ require("./misc/swagger-docs-setup")(app);
 
 // common function used by both routes below
 const issueNewAuthToken = (user) => {
-    return jwt.sign({user_id: user.id }, process.env.JWT_SECRET_KEY, {expiresIn:"10m"});
+    return jwt.sign({user_id: user.id }, process.env.JWT_SECRET_KEY, {expiresIn:"20m"});
 }
 
 // wrap queries made by the postgres client in a promise. 
@@ -48,7 +48,7 @@ function query_func(client, query_text, query_payload) {
         const verification_details = jwt.verify(token, process.env.JWT_SECRET_KEY);
         return res.send(verification_details);
     }
-    catch (error){ res.status(400).send("invalid jwt token"); }
+    catch (error){ res.status(401).send("Unauthorized"); }
     
 });
 

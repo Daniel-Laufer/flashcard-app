@@ -13,14 +13,14 @@ import Container from '@material-ui/core/Container';
 import { Alert } from '@material-ui/lab';
 import { useHistory } from "react-router-dom";
 
-
 // css
 import "./LogInPage.css";
 
 
 import axios from 'axios';
-// axios.defaults.baseURL = "http://localhost/";
+axios.defaults.baseURL = "https://localhost/"; 
 
+console.log(axios.defaults.transformRequest);
 
 
 

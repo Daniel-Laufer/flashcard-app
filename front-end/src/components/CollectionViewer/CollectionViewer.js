@@ -82,7 +82,7 @@ export default function CollectionViewer() {
     useEffect(() => {
       const config = {
         headers: {
-            "auth-token": localStorage.getItem("auth-token")
+          "authorization": `Bearer ${localStorage.getItem("auth-token")}`
         }
       }
       
@@ -97,7 +97,12 @@ export default function CollectionViewer() {
           console.log(res.data);
         })
         .catch((err) => {
-          console.log(err);
+          console.log(err.response);
+          if(err.response.status == 401){
+            localStorage.removeItem("auth-token");
+            localStorage.removeItem("user_id");
+            return setTimeout(() => history.push("/login"), 800);
+          }
         });
 
 
