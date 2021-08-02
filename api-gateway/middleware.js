@@ -6,31 +6,13 @@ const addresses = {
 //
 
 module.exports = {
-    /**
-     * /authorize:
-     *  post:
-     *      tags:
-     *          - auth-server-api
-     *      description: authorize a user and return their respective permissions.
-     *      parameters:
-     *          -  name: auth-token
-     *             in: header
-     *             required: true
-     *      responses:
-     *          "200":
-     *              description: success
-     *          "400":
-     *              description: unauthorized
-     *          "401":
-     *              description: invalid jwt token
-     */
     authorize: async (req, res, next) => {
         try{
-            const token = req.get("auth-token");
+            const token = req.get("authorization").split(" ")[1];
             if(!token) return res.status(401).send("Unauthorized");
             let config = {
                 headers: {
-                    "auth-token": token,
+                    "authorization": `Bearer ${token}`,
                 }
             }
            

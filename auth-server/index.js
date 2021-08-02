@@ -19,15 +19,12 @@ app.use(cors());
 require("./misc/swagger-docs-setup")(app);
 
 
-// importing and configuring middleware 
-const middleware = require("./middleware.js");
-
-
 // common function used by both routes below
 const issueNewAuthToken = (user) => {
-    return jwt.sign({user_id: user.id }, process.env.JWT_SECRET_KEY, {expiresIn:"20m"});
+    return jwt.sign({user_id: user.id }, process.env.JWT_SECRET_KEY, {expiresIn:"10m"});
 }
 
+// wrap queries made by the postgres client in a promise. 
 function query_func(client, query_text, query_payload) {
     return new Promise((resolve, reject) => {
         client.query(query_text, query_payload, (err,res) => {
@@ -42,28 +39,9 @@ function query_func(client, query_text, query_payload) {
 
 
 
-/*======= ROUTES =======*/
-/**
- * @swagger
- * /authorize:
- *  post:
- *      tags:
- *          - auth-server-api
- *      description: authorize a user and return their respective permissions.
- *      parameters:
- *          -  name: auth-token
- *             in: header
- *             required: true
- *      responses:
- *          "200":
- *              description: success
- *          "400":
- *              description: unauthorized
- *          "401":
- *              description: invalid jwt token
- */
+ // documentation available at <base_url>/api/api-docs/
  app.get("/authorize", async (req, res) => {
-    const token = req.get("auth-token");
+    const token = req.get("authorization").split(" ")[1];
    
     if (!token) return res.status(401).send("Unauthorized");
     try{
@@ -77,32 +55,7 @@ function query_func(client, query_text, query_payload) {
 
 
 
-
-
-
-/**
- * @swagger
- * /register:
- *  post:
- *      tags:
- *          - auth-server-api
- *      description: create a new user specifed by the (username, password) pair and log them in (by return a jwt auth token)
- *      parameters:
- *          - name: username
- *            in: body
- *            required: true
- *          - name: password 
- *            required: true
- *            in: body
- *            description: password must consist of a minimum of 6 characters.
- *      responses:
- *          "200":
- *              description: success
- *          "400":
- *              description: bad parameters provided
- *          "500":
- *              description: internal server error
- */
+ // documentation available at <base_url>/api/api-docs/
 app.post("/register", async (req, res) => {
     const user_validation_schema = Joi.object({
         password: Joi.string().min(5).required(),
@@ -130,37 +83,15 @@ app.post("/register", async (req, res) => {
         }
         new_user = pg_res.rows[0];
         const token = issueNewAuthToken(new_user);
-        res.header("auth-token", token).send({id: new_user.id});        
+        res.header("authorization", `Bearer ${token}`).send({id: new_user.id});        
     });
     
 });
 
 
 
-/**
- * @swagger
- * /login:
- *  post:
- *      tags:
- *          - auth-server-api
- *      description: log the user specifed by the (username, password) pair in (by return a jwt auth token)
- *      parameters:
- *          - name: username
- *            in: body
- *            required: true
- *          - name: password 
- *            required: true
- *            in: body
- *            description: password must consist of a minimum of 6 characters.
- *      responses:
- *          "200":
- *              description: success
- *          "400":
- *              description: bad parameters provided
- *          "500":
- *              description: internal server error
- */
 
+ // documentation available at <base_url>/api/api-docs/
 app.post("/login", async (req, res) => {
     const user_validation_schema = Joi.object({
         password: Joi.string().min(5).required(),
@@ -185,7 +116,7 @@ app.post("/login", async (req, res) => {
 
 
     const token = issueNewAuthToken(foundUser);
-    res.header("auth-token", token).send({id: foundUser.id}); 
+    res.header("authorization", `Bearer ${token}`).send({id: foundUser.id}); 
 
 });
 

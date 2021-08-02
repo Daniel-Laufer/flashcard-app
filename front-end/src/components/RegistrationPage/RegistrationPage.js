@@ -69,9 +69,9 @@ export default function RegistrationPage() {
       password: formData.password
     }   
     
-    axios.post("api/register/", payload)
+    axios.post("api/user/register/", payload)
       .then((res) => {
-        const token = res.headers["auth-token"];
+        const token = res.headers["authorization"].split(" ")[1];
         const user_id = res.data["id"];
         localStorage.setItem("auth-token", token);
         localStorage.setItem("user_id", user_id);

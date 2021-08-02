@@ -17,7 +17,7 @@ const flashcardRoutes = require("./routes/Flashcards");
 
 
 // hooking up the routes 
-app.use("/", authRoutes);
+app.use("/user", authRoutes);
 app.use("/", flashcardCollectionRoutes);
 app.use("/", flashcardRoutes);
 

@@ -6,14 +6,14 @@ const {standardGetRouteActions, standardPostRouteActions} = require("../misc/sta
 const middleware = require("../middleware.js");
 
 
-
+ // documentation available at <base_url>/api/api-docs/
  router.get("/flashcard_collections", middleware.authorize, async (req, res) => {
     await standardGetRouteActions(addresses["rest-api-server"], "flashcard_collections", req, res, req.authorization_details);
 });
 
 
 
-
+ // documentation available at <base_url>/api/api-docs/
  router.post("/flashcard_collections", middleware.authorize,async (req, res) => {
     // deconstructing the request body
 

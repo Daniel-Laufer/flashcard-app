@@ -46,9 +46,9 @@
             "200": {
               "description": "successful operation",
               "headers": {
-                "auth-token": {
+                "authorization": {
                   "type": "string",
-                  "description": "a valid authentication token for this user"
+                  "description": "a valid authentication token for this user, in the standard format of: \"Bearer <token>\""
                 }
               }
             },
@@ -88,9 +88,9 @@
             "201": {
               "description": "successfully created new user",
               "headers": {
-                "auth-token": {
+                "authorization": {
                   "type": "string",
-                  "description": "an authentication token for this user"
+                  "description": "an authentication token for this user, in the standard format of: \"Bearer <token>\""
                 }
               }
             },
@@ -112,7 +112,7 @@
           "description": "",
           "parameters": [
             {
-              "name": "auth-token",
+              "name": "authorization",
               "in": "header",
               "description": "Authorization token",
               "required": true,
@@ -123,7 +123,7 @@
             "200": {
               "description": "successful operation",
               "headers": {
-                "auth-token": {
+                "authorization": {
                   "type": "string",
                   "description": "an authentication token for this user"
                 }
@@ -147,7 +147,7 @@
           "description": "Retrieves all the flashcards from a specific collection. Note that if a flashcard collection is private, you will only be able to view said flashcard collection if you are logged in as the user who owns it.",
           "parameters": [
             {
-                "name": "auth-token",
+                "name": "authorization",
                 "in": "header",
                 "description": "Authorization token",
                 "required": true,
@@ -186,7 +186,7 @@
           "summary": "create a new flashcard collection",
           "parameters": [
             {
-              "name": "auth-token",
+              "name": "authorization",
               "in": "header",
               "description": "Authorization token",
               "required": true,
@@ -224,7 +224,7 @@
             "summary": "retrieves all flashcard collections",
             "parameters": [
               {
-                "name": "auth-token",
+                "name": "authorization",
                 "in": "header",
                 "description": "Authorization token",
                 "required": true,
@@ -258,7 +258,7 @@
           "summary": "create a new flashcard collection with an array of flahscards.",
           "parameters": [
             {
-              "name": "auth-token",
+              "name": "authorization",
               "in": "header",
               "description": "Authorization token",
               "required": true,

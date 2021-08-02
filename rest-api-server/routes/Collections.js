@@ -5,7 +5,7 @@ const query_func = require("../misc/postgres_helpers");
 var format = require('pg-format');
 
 
-
+ // documentation available at <base_url>/api/api-docs/
  router.get("/flashcard_collections", async (req, res) => {
     
     const request_authorization_details = JSON.parse(req.headers["authorization_details"]);
@@ -26,7 +26,7 @@ var format = require('pg-format');
         })
         .catch((err) => res.status(500).send(err));
 });
-
+ // documentation available at <base_url>/api/api-docs/
  router.post("/flashcard_collections", async (req, res) => {
     // deconstructing the request body
     const {user_id, title, public, description} = req.body;
@@ -48,7 +48,7 @@ var format = require('pg-format');
    
 });
 
-
+ // documentation available at <base_url>/api/api-docs/
  router.post("/flashcard_collections/createWithArray", async (req, res) => {
     // deconstructing the request body
     const {user_id, title, public, description, flashcards} = req.body;
