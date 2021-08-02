@@ -42,7 +42,7 @@ export default function CollectionCreator() {
 
         console.log(JSON.stringify(payload));
         
-        axios.post("api/flashcard_collections/", payload, config)
+        axios.post("api/flashcard_collections/createWithArray", payload, config)
           .then((res) => {
             console.log("success!");
             setTimeout(() => history.push("/"), 800);

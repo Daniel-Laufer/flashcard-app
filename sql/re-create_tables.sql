@@ -16,7 +16,7 @@ CREATE TABLE flashcard_collection(
   sumRatings INT DEFAULT 0,
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
-  description TEXT
+  description TEXT NOT NULL
 );
 
 CREATE TABLE flashcard(

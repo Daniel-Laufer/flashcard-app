@@ -1,0 +1,437 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "description": "The official documentation of the Flashcard App created by Daniel Laufer.",
+      "version": "1.0.5",
+      "title": "The Flashcard App's Offical API Documentation",
+      "contact": {
+        "email": "lauferkdaniel@gmail.com"
+      }
+    },
+    "tags": [
+      {
+        "name": "flashcard",
+        "description": "Everything to do with your flashcards"
+      },
+      {
+        "name": "user",
+        "description": "Operations about user"
+      }
+    ],
+    "paths": {
+      "/user/login": {
+        "post": {
+          "tags": [
+            "user"
+          ],
+          "summary": "Logs user into the system",
+          "description": "",
+          "parameters": [
+            {
+              "name": "username",
+              "in": "body",
+              "description": "The user name for login",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "password",
+              "in": "body",
+              "description": "The password for the login",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "headers": {
+                "auth-token": {
+                  "type": "string",
+                  "description": "a valid authentication token for this user"
+                }
+              }
+            },
+            "400": {
+              "description": "Invalid username/password supplied"
+            },
+            "500": {
+              "description": "Internal server error"
+            }
+          }
+        }
+      },
+      "/user/register": {
+        "post": {
+          "tags": [
+            "user"
+          ],
+          "summary": "creates a new account and logs the new user into the system",
+          "description": "",
+          "parameters": [
+            {
+              "name": "username",
+              "in": "body",
+              "description": "The user name for login",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "password",
+              "in": "body",
+              "description": "The password for the login",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "successfully created new user",
+              "headers": {
+                "auth-token": {
+                  "type": "string",
+                  "description": "an authentication token for this user"
+                }
+              }
+            },
+            "400": {
+              "description": "Invalid username/password supplied"
+            },
+            "500": {
+              "description": "Internal server error"
+            }
+          }
+        }
+      },
+      "/user/authorize": {
+        "get": {
+          "tags": [
+            "user"
+          ],
+          "summary": "authorize a user and retrieve their permissions",
+          "description": "",
+          "parameters": [
+            {
+              "name": "auth-token",
+              "in": "header",
+              "description": "Authorization token",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "headers": {
+                "auth-token": {
+                  "type": "string",
+                  "description": "an authentication token for this user"
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized"
+            },
+            "500": {
+              "description": "invalid jwt token format"
+            }
+          }
+        }
+      },
+      "/flashcard_collections/{flashcard_collection_id}/flashcards": {
+        "post": {
+          "tags": [
+            "flashcard"
+          ],
+          "summary": "retrieves all the flashcards from a specific collection",
+          "description": "Retrieves all the flashcards from a specific collection. Note that if a flashcard collection is private, you will only be able to view said flashcard collection if you are logged in as the user who owns it.",
+          "parameters": [
+            {
+                "name": "auth-token",
+                "in": "header",
+                "description": "Authorization token",
+                "required": true,
+                "type": "string"
+            },
+            {
+              "name": "flashcard_collection_id",
+              "in": "path",
+              "description": "ID of the flashcard collection",
+              "required": true,
+              "type": "integer",
+              "format": "int64"
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "successful creation of new resource"
+            },
+            "400": {
+                "description": "invalid/bad/missing data in request"
+            },
+            "401": {
+                "description": "unauthorized"
+            },
+            "500": {
+                "description": "failed to insert into db due to failed constraint or an internal server error occurred"
+            }
+          }
+        }
+      },
+      "/flashcard_collections": {
+        "post": {
+          "tags": [
+            "flashcard"
+          ],
+          "summary": "create a new flashcard collection",
+          "parameters": [
+            {
+              "name": "auth-token",
+              "in": "header",
+              "description": "Authorization token",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "data for the new flashcard collection",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Flashcard_collection_creation"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "successful creation of new resource"
+            },
+            "400": {
+                "description": "invalid/bad/missing data in request"
+            },
+            "401": {
+                "description": "unauthorized"
+            },
+            "500": {
+                "description": "failed to insert into db due to failed constraint or an internal server error occurred"
+            }
+          }
+        },
+        "get": {
+            "tags": [
+              "flashcard"
+            ],
+            "summary": "retrieves all flashcard collections",
+            "parameters": [
+              {
+                "name": "auth-token",
+                "in": "header",
+                "description": "Authorization token",
+                "required": true,
+                "type": "string"
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "success",
+                "schema": {
+                    "$ref": "#/definitions/Flashcard_collections"
+                }
+              },
+              "400": {
+                  "description": "invalid/bad/missing data in request"
+              },
+              "401": {
+                  "description": "unauthorized"
+              },
+              "500": {
+                  "description": "failed to insert into db due to failed constraint or an internal server error occurred"
+              }
+            }
+          }
+      },
+      "/flashcard_collections/createWithArray": {
+        "post": {
+          "tags": [
+            "flashcard"
+          ],
+          "summary": "create a new flashcard collection with an array of flahscards.",
+          "parameters": [
+            {
+              "name": "auth-token",
+              "in": "header",
+              "description": "Authorization token",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "data for the new flashcard collection",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Flashcard_collection_creation_with_array"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "successful creation of new resource"
+            },
+            "400": {
+                "description": "invalid/bad/missing data in request"
+            },
+            "401": {
+                "description": "unauthorized"
+            },
+            "500": {
+                "description": "failed to insert into db due to failed constraint or an internal server error occurred"
+            }
+          }
+        }
+      }
+    },
+    "definitions": {
+      "Flashcard_creation": {
+        "type": "object",
+        "required": [
+            "front_text",
+            "back_text"
+        ],
+        "properties": {
+          "front_text": {
+            "type": "string",
+            "example": "some front text"
+          },
+          "back_text": {
+            "type": "string",
+            "example": "some back text"
+          },
+          "front_image_url": {
+            "type": "string" ,
+            "example": "https://website/someImage.jpg"
+          },
+          "back_image_url": {
+            "type": "string" ,
+            "example": "https://website/someImage.jpg"
+          }
+          
+        },
+        "xml": {
+          "name": "Category"
+        }
+      },
+      
+      "Flashcard_collection_creation": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "format": "int64"
+          },
+          "public": {
+            "type": "boolean"
+          },
+          "description": {
+            "type": "string",
+            "format": "int64"
+           }
+          },
+          "status": {
+            "type": "string",
+            "description": "Order Status",
+            "enum": [
+              "placed",
+              "approved",
+              "delivered"
+            ]
+          },
+          "complete": {
+            "type": "boolean"
+          },
+        "xml": {
+          "name": "Flashcard_collection_creation"
+        }
+      },
+      "Flashcard_collection_creation_with_array": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "format": "int64"
+          },
+          "public": {
+            "type": "boolean"
+          },
+          "description": {
+            "type": "string",
+            "format": "int64"
+          },
+          "flashcards": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/Flashcard_creation"
+            }
+            }
+          },
+          "status": {
+            "type": "string",
+            "description": "Order Status",
+            "enum": [
+              "placed",
+              "approved",
+              "delivered"
+            ]
+          },
+          "complete": {
+            "type": "boolean"
+          },
+        "xml": {
+          "name": "Flashcard_collection_creation"
+        }
+      },
+      "Flashcard_collection": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "description": {
+            "type": "string"
+          },
+          "user_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "public": {
+            "type": "boolean" 
+          },
+          "numratings": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "sumratings": {
+            "type": "integer",
+            "format": "int64"
+          } 
+        },
+        "xml": {
+          "name": "Flashcard_collection"
+        }
+      },
+      "Flashcard_collections": {
+        "type": "array",
+        "items": {
+            "$ref": "#/definitions/Flashcard_collection"
+        },
+        "xml": {
+          "name": "Flashcard_collections"
+        }
+      }
+    },
+    "externalDocs": {
+      "description": "Find out more about Swagger",
+      "url": "http://swagger.io"
+    }
+  }
