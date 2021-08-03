@@ -7,7 +7,7 @@ docker build -t lauferdaniel/flashcard-app-auth-server:latest -t lauferdaniel/fl
 docker push lauferdaniel/flashcard-app-front-end:latest
 docker push lauferdaniel/flashcard-app-api-gateway:latest
 docker push lauferdaniel/flashcard-app-rest-api-server:latest
-docker push lauferdaniel/flashcard-app-auth-server:latest:latest
+docker push lauferdaniel/flashcard-app-auth-server:latest
 
 docker push lauferdaniel/flashcard-app-front-end:$SHA
 docker push lauferdaniel/flashcard-app-api-gateway:$SHA
