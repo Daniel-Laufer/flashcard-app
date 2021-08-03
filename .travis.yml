@@ -17,7 +17,7 @@ deploy:
   provider: script
   script: bash ./deploy.sh
   on:
-    branch: master # only execute this deploy script if we push to the master branch on github
+    branch: main # only execute this deploy script if we push to the main branch on github
 
 
 
