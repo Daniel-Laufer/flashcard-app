@@ -6,7 +6,6 @@ const addresses = require("../misc/api_addresses");
 
  // documentation available at <base_url>/api/api-docs/
  router.post("/login", async (req, res) => {
-     console.log("here");
     const payload = {
         username: req.body.username,
         password: req.body.password

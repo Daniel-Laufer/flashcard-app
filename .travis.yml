@@ -1,0 +1,24 @@
+sudo: required
+services:
+  - docker
+env:
+  global:
+    - SHA=$(git rev-parse HEAD)
+# creating images that will be used for testing
+before_install:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin # login travis into my docker account
+  - docker build -t lauferdaniel/test-flashcard-app-front-end-react -f ./front-end/Dockerfile.dev ./front-end
+  - docker build -t lauferdaniel/test-flashcard-app-api-gateway -f ./front-end/Dockerfile.dev ./api-gateway
+# run thes tests
+script:
+  - docker run -e CI=true lauferdaniel/test-flashcard-app-front-end-react npm run test
+  - docker run -e CI=true lauferdaniel/test-flashcard-app-api-gateway npm run test
+deploy:
+  provider: script
+  script: bash ./deploy.sh
+  on:
+    branch: master # only execute this deploy script if we push to the master branch on github
+
+
+
+    
