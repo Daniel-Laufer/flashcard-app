@@ -138,6 +138,78 @@
           }
         }
       },
+      "/flashcard_collections/{collectionId}": {
+        "put": {
+          "tags": [
+            "flashcard"
+          ],
+          "summary": "update an entire existing flashcard collection",
+          "parameters": [
+            {
+              "name": "authorization",
+              "in": "header",
+              "description": "Authorization token",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "an updated *complete* list of the collection's flashcards",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Flashcard_collection_creation_with_array"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "successful update of resource"
+            },
+            "400": {
+                "description": "invalid/bad/missing data in request"
+            },
+            "401": {
+                "description": "unauthorized"
+            },
+            "500": {
+                "description": "failed to insert into db due to failed constraint or an internal server error occurred"
+            }
+          }
+        },
+        "get": {
+            "tags": [
+              "flashcard"
+            ],
+            "summary": "retrieves all flashcard collections",
+            "parameters": [
+              {
+                "name": "authorization",
+                "in": "header",
+                "description": "Authorization token",
+                "required": true,
+                "type": "string"
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "success",
+                "schema": {
+                    "$ref": "#/definitions/Flashcard_collections"
+                }
+              },
+              "400": {
+                  "description": "invalid/bad/missing data in request"
+              },
+              "401": {
+                  "description": "unauthorized"
+              },
+              "500": {
+                  "description": "failed to insert into db due to failed constraint or an internal server error occurred"
+              }
+            }
+          }
+      },
       "/flashcard_collections/{flashcard_collection_id}/flashcards": {
         "post": {
           "tags": [

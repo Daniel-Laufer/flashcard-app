@@ -32,5 +32,32 @@ module.exports = {
             }
             return res.status(500).send(err);
         }
+    },
+    standardPutRouteActions: async (api_name, resource, payload, req, res) => {
+        try{
+            const response = await axios.put(`${api_name}/${resource}`, payload);
+            return res.send(response.data);
+        }
+        catch (err){
+            if(err.response){
+                const status = err.response.status;
+                return res.status(status).send(err.response.data);
+            }
+            return res.status(500).send(err);
+        }
+    },
+    standardDeleteRouteActions: async (api_name, resource, payload, req, res) => {
+        try{
+            const response = await axios.delete(`${api_name}/${resource}`, payload);
+            return res.send(response.data);
+        }
+        catch (err){
+            if(err.response){
+                const status = err.response.status;
+                return res.status(status).send(err.response.data);
+            }
+            return res.status(500).send(err);
+        }
     }
+    
 }

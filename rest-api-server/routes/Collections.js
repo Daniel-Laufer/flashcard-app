@@ -40,7 +40,6 @@ var format = require('pg-format');
 
     query_func(pgClient, text, valuesToCreateEmptyCollection)
         .then((query_response) => {
-            console.log(query_response.rows);
             return res.status(201).send({id: query_response.rows[0]["id"]})
         })
             
@@ -74,6 +73,69 @@ var format = require('pg-format');
         .catch((err)=> res.status(500).send(err));
    
 });
+
+
+
+ // documentation available at <base_url>/api/api-docs/
+ router.put("/flashcard_collections/:collectionId", async (req, res) => {
+    // deconstructing the request body
+    const {user_id, title, public, description, flashcards} = req.body;
+    let text = `SELECT * from flashcard_collection WHERE id=${req.params.collectionId}`;
+    query_func(pgClient, text, [])
+        .then((query_response) => {
+            if(query_response.rows.length == 0) return res.status(400).send("this collection does not exist.");
+            
+            // checking to see if the user who sent the request is allowed to update this.
+            if(query_response.rows[0].user_id != user_id) return res.status(401).send("unauthorized");
+            
+            // update this collection
+            text = `UPDATE flashcard_collection SET title = '${title}', public = '${public}', description = '${description}', updated_at=to_timestamp(${Date.now()/1000}) WHERE id=${req.params.collectionId}`;
+            return query_func(pgClient, text, []);
+        })
+        .then((query_response) => {
+            // delete all the old flashcards
+            text = `DELETE FROM flashcard WHERE collection_id=${req.params.collectionId}`;
+            return query_func(pgClient, text, []);
+        })
+        .then((query_response) => {
+            // insert all the new flashcards
+            let values = [];
+            let card;
+            for(let i = 0; i < flashcards.length; i++){
+                card = flashcards[i];
+                values.push([req.params.collectionId, card["front_text"], card["back_text"], card["front_image_url"], card["back_image_url"]]);
+            }
+            text = format('INSERT INTO flashcard (collection_id, front_text, back_text, front_image_url, back_image_url) VALUES %L RETURNING *', values);
+            return query_func(pgClient, text, []);
+        })
+        .then((query_response) => res.status(201).send("success"))
+        .catch((err)=> res.status(500).send(err));
+
+ });
+
+ // documentation available at <base_url>/api/api-docs/
+ router.delete("/flashcard_collections/:collectionId", async (req, res) => {
+    // deconstructing the request body
+    const user_id = req.get("user_id")
+    const collectionId = req.params.collectionId;
+    let text = `SELECT * from flashcard_collection WHERE id=${collectionId}`;
+    query_func(pgClient, text, [])
+    .then((query_response) => {
+        if(query_response.rows.length == 0) return res.status(400).send("this collection does not exist.");
+        
+        // checking to see if the user who sent the request is allowed to update this.
+        if(query_response.rows[0].user_id != user_id) return res.status(401).send("unauthorized");
+        
+        // delete this collection and all it's flashcards (they will cascade delete)
+        text = `DELETE FROM flashcard_collection WHERE id=${collectionId}`;
+            return query_func(pgClient, text, []);
+        })
+        .then((query_response) => {
+            if(res.statusCode == 200)res.send("successful delete")
+        })
+        .catch((err)=> res.status(500).send(err));
+
+ });
 
 
 module.exports = router;
