@@ -105,20 +105,6 @@ export default function CollectionViewer() {
           }
         });
 
-
-      // await axios.get("api/flashcard_collfections/", config)
-      // .then((res) => {
-      //   console.log("success!");
-      //   setCollections(res.data);
-      // })
-      // .catch((err) => {
-      //   console.log(err);
-      // });
-
-
-
-
-
     }, []);
 
       return (

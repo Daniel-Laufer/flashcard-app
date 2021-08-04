@@ -1,9 +1,9 @@
-.collectionCreatorContainer{
+.collectionEditorContainer{
     padding:50px;
 }
 
 
-.collectionDetailsCreator{
+.collectionDetailsEditor{
     display: flex;
     margin:auto;
     flex-direction: column;
@@ -13,12 +13,12 @@
     
 }
 
-.collectionDetailsCreator > .MuiTextField-root{
+.collectionDetailsEditor > .MuiTextField-root{
     margin-right: 10px !important;
     margin-bottom: 20px;
 }
 
-.collectionDetailsCreator > .MuiTextField-root:nth-of-type(2){
+.collectionDetailsEditor > .MuiTextField-root:nth-of-type(2){
     margin-right: 10px !important;
     margin-bottom: 40px;
 }
@@ -39,7 +39,7 @@
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     width: 40%;
     min-width: 350px;
-    height: 450px !important;
+    height: 400px;
     position: relative;
 }
 
@@ -80,30 +80,4 @@
     top:75px;
     left: 50%;
     transform: translate(-50%, 0);
-}
-
-
-.dropzoneContainer{
-    position: relative;
-    display: block;
-    height: 50px;
-    width: 100%;
-    margin-top: 80px;
-}
-
-.dropzone{
-    
-    width:80%;
-    margin:auto;
-    margin-left:35px;
-    left:0px;
-    position: absolute;
-    border: 2px solid #324199;
-    /* background-color: lightgray; */
-    padding: 5px;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    margin-bottom: 10px;
-    top:80px;
-    border-radius: 25px;;
 }

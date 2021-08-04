@@ -153,6 +153,14 @@
               "type": "string"
             },
             {
+              "name": "collectionId",
+              "in": "path",
+              "description": "ID of the flashcard collection",
+              "required": true,
+              "type": "integer",
+              "format": "int64"
+            },
+            {
               "in": "body",
               "name": "body",
               "description": "an updated *complete* list of the collection's flashcards",
@@ -181,7 +189,7 @@
             "tags": [
               "flashcard"
             ],
-            "summary": "retrieves all flashcard collections",
+            "summary": "retrieves a specific flashcard collection that has an id of <collectionId>",
             "parameters": [
               {
                 "name": "authorization",
@@ -189,14 +197,59 @@
                 "description": "Authorization token",
                 "required": true,
                 "type": "string"
+              },
+              {
+                "name": "collectionId",
+                "in": "path",
+                "description": "ID of the flashcard collection",
+                "required": true,
+                "type": "integer",
+                "format": "int64"
               }
             ],
             "responses": {
               "200": {
                 "description": "success",
                 "schema": {
-                    "$ref": "#/definitions/Flashcard_collections"
+                    "$ref": "#/definitions/Flashcard_collection"
                 }
+              },
+              "400": {
+                  "description": "invalid/bad/missing data in request"
+              },
+              "401": {
+                  "description": "unauthorized"
+              },
+              "500": {
+                  "description": "failed to insert into db due to failed constraint or an internal server error occurred"
+              }
+            }
+          },
+          "delete": {
+            "tags": [
+              "flashcard"
+            ],
+            "summary": "delete a specific flashcard collection that has an id of <collectionId> ",
+            "parameters": [
+              {
+                "name": "authorization",
+                "in": "header",
+                "description": "Authorization token",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "name": "collectionId",
+                "in": "path",
+                "description": "ID of the flashcard collection",
+                "required": true,
+                "type": "integer",
+                "format": "int64"
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "success"
               },
               "400": {
                   "description": "invalid/bad/missing data in request"

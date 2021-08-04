@@ -72,8 +72,8 @@ export default function CollectionCard({collection}) {
               View
             </Button>
             {
-              localStorage.getItem("user_id") && localStorage.getItem("user_id") === collection.user_id ? 
-              <Button size="small" color="primary">
+              localStorage.getItem("user_id") && collection.user_id && localStorage.getItem("user_id") === collection.user_id.toString() ? 
+              <Button onClick={() => history.push(`/collection/edit/${collection.id}`)} size="small" color="primary">
                 Edit
               </Button>
               :
