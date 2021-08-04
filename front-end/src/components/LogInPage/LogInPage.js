@@ -106,6 +106,7 @@ export default function LogInPage() {
       <div className={classes.paper}>
         <div id="login-in-pizza-logo">
         </div>
+        {/* <img src="/api/images/61cdb000c98cf4ee4731ba332e2dd9c9"></img> this works!*/} 
         <form className={classes.form} onSubmit={handleSubmit} noValidate>
 
             <TextField
