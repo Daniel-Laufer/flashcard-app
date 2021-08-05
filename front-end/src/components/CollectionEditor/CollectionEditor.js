@@ -1,8 +1,9 @@
-import { useHistory } from "react-router-dom";
-import { useState } from "react";
+import { useHistory,  useParams} from "react-router-dom";
+import { useState , useEffect} from "react";
 import ReactCardFlip from 'react-card-flip';
 import axios from 'axios';
-import "./CollectionCreator.css";
+import "../CollectionCreator/CollectionCreator.css";
+import "./CollectionEditor.css";
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
@@ -13,17 +14,53 @@ import * as _ from 'underscore';
 import DoneOutlineIcon from '@material-ui/icons/DoneOutline';
 import Divider from '@material-ui/core/Divider';
 import Dropzone from 'react-dropzone'
-// import { createTheme, ThemeProvider } from '@material-ui/core/styles';
-// import { green } from '@material-ui/core/colors';
 
 
 
 
-export default function CollectionCreator() {
-    const defaultFlashcardData  = [{id: 1, isFlipped: false, front_text: "", back_text: "", front_image_key: null, back_image_key: null, createdAt: Date.now()}];
-    const [collectionDetails, setCollectionDetails] = useState({title: "", description: "", public: true});
+
+export default function CollectionEditor() {
+  const defaultFlashcardData  = [{id: 1, isFlipped: false, front_text: "", back_text: "", front_image_key: null, back_image_key: null, createdAt: Date.now()}];
+  const [collectionDetails, setCollectionDetails] = useState({title: "", description: "", public: true});
     const [flashcardData, setFlashcardData] = useState(defaultFlashcardData);
     const history = useHistory();
+    const {id} = useParams();
+
+
+    useEffect(() => {
+      const config = {
+        headers: {
+          "authorization": `Bearer ${localStorage.getItem("auth-token")}`
+        }
+      }
+      
+      axios.get(`/api/flashcard_collections/${id}`, config)
+        .then((res) => {
+          setCollectionDetails(res.data);
+          return axios.get(`/api/flashcards/${id}`, config)
+        })
+        .then((res) => {
+          console.log("success!");
+          setFlashcardData(res.data);
+          for(let i=0; i<res.data.length;i++){
+            res.data[i] = {...res.data[i], isFlipped:false, createdAt:Date.now()}
+
+          }
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err.response);
+          if(err.response.status == 401){
+            localStorage.removeItem("auth-token");
+            localStorage.removeItem("user_id");
+            return setTimeout(() => history.push("/login"), 800);
+          }
+        });
+
+    }, []);
+
+
+
 
 
     const handleSubmit = (event) => {
@@ -40,16 +77,12 @@ export default function CollectionCreator() {
           public: collectionDetails.public,
           flashcards: flashcardData
         }   
-
-        console.log(JSON.stringify(payload));
         
-        axios.post("api/flashcard_collections/createWithArray", payload, config)
+        axios.put(`api/flashcard_collections/${id}`, payload, config)
           .then((res) => {
-            console.log("success!");
             setTimeout(() => history.push("/"), 800);
           })
           .catch((err) => {
-            console.log(err.response);
             if(err.response.status == 401){
               localStorage.removeItem("auth-token");
               localStorage.removeItem("user_id");
@@ -58,9 +91,27 @@ export default function CollectionCreator() {
           });
       };
 
+      const handleDelete = (event) => {
+        const config = {
+          headers: {
+            "authorization": `Bearer ${localStorage.getItem("auth-token")}`
+          }
+        }
+        
+        axios.delete(`/api/flashcard_collections/${id}`, config)
+          .then((res) => setTimeout(() => history.push("/"), 800))
+          .catch((err) => {
+            if(err.response && err.response.status == 401){
+              localStorage.removeItem("auth-token");
+              localStorage.removeItem("user_id");
+              return setTimeout(() => history.push("/login"), 800);
+            }
+          });
+      }
+
       const handleClickForNewFlashcard = (event) => {
         const newFlashcard =  {id: flashcardData[flashcardData.length - 1].id + 1, front_text: "", back_text: "", front_image_key: null, back_image_key: null, createdAt: Date.now()};
-        
+
         setFlashcardData([...flashcardData, newFlashcard]);
 
       };
@@ -75,7 +126,8 @@ export default function CollectionCreator() {
         const updatedFlashcard = {...flashcard, isFlipped: !flashcard.isFlipped};
 
         //sorting to maintain the correct ordering
-        setFlashcardData(_.sortBy([...otherFlashcards, updatedFlashcard], "createdAt"));
+        const newFlashcards = _.sortBy([...otherFlashcards, updatedFlashcard], "id")
+        setFlashcardData(newFlashcards);
       };
 
       const handleUpdatingFlashcardDataText =(event, flashcard) => {
@@ -84,9 +136,8 @@ export default function CollectionCreator() {
         let updatedFlashcard;
         if(event.target.name == "front-input") updatedFlashcard = {...flashcard, front_text: event.target.value};
         else updatedFlashcard = {...flashcard, back_text: event.target.value};
-
         //sorting to maintain the correct ordering
-        setFlashcardData(_.sortBy([...otherFlashcards, updatedFlashcard], "createdAt"));
+        setFlashcardData(_.sortBy([...otherFlashcards, updatedFlashcard], "id"));
       }
 
       const handleFileUpload = async (files, flashcard, is_front) => {
@@ -102,7 +153,7 @@ export default function CollectionCreator() {
             else updatedFlashcard = {...flashcard, back_image_key: result.data.imageKey};
 
             //sorting to maintain the correct ordering
-            setFlashcardData(_.sortBy([...otherFlashcards, updatedFlashcard], "createdAt"));
+            setFlashcardData(_.sortBy([...otherFlashcards, updatedFlashcard], "id"));
           })
           .catch((err) => {
             console.error(err.response);
@@ -115,10 +166,13 @@ export default function CollectionCreator() {
                         
       }
 
-    
+
+
+
+
       return (
           
-        <div className="collectionCreatorContainer">
+        <div className="collectionEditorContainer">
             <Fab className="backArrowButton" color="primary" aria-label="add" onClick={() => history.push("/")}>
                 <ArrowBackIcon />
             </Fab>
@@ -161,10 +215,9 @@ export default function CollectionCreator() {
                           />
                           {
                             flashcard.front_image_key ?
-                              <img className={"cardImage"} src={`api/images/${flashcard.front_image_key}`}/>
-                              // <img className={"cardImage"} src={`api/images/edc4e4837d21daac6e654e53f460b277`}/>
-                              :
-                              <div className="dropzoneContainer">
+                            <>
+                              <img className={"editorCardImageWithDropZone"} src={`https://localhost/api/images/${flashcard.front_image_key}`}/>
+                              <div className="editorDropzoneContainerWithImage">
                                 <Dropzone 
                                   maxFiles={1}
                                   maxSize={10000000} // 10MB
@@ -181,7 +234,27 @@ export default function CollectionCreator() {
                                   )}
                                 </Dropzone>
                               </div>
+                            </>
+                              :
+                              <div className="dropzoneContainer">
+                                <Dropzone 
+                                  maxFiles={1}
+                                  maxSize={10000000} // 10MB
+                                  accept={['image/jpeg', 'image/png', 'image/jpg']}
+                                  onDropAccepted={acceptedFiles => handleFileUpload(acceptedFiles, flashcard, true)}
+                                >
+                                  {({getRootProps, getInputProps}) => (
+                                    <section >
+                                      <div {...getRootProps()}>
+                                        <input {...getInputProps()} />
+                                        <p className="dropzone">Upload a different image (Optional)</p>
+                                      </div>
+                                    </section>
+                                  )}
+                                </Dropzone>
+                              </div>
                           }
+                          
                           <Button
                           className="flipButton"
                           variant="contained"
@@ -207,8 +280,26 @@ export default function CollectionCreator() {
                           />
                           {
                             flashcard.back_image_key ?
-                              <img className={"cardImage"} src={`api/images/${flashcard.back_image_key}`}/>
-                              // <img className={"cardImage"} src={`api/images/edc4e4837d21daac6e654e53f460b277`}/>
+                            <>
+                              <img className={"editorCardImageWithDropZone"} src={`https://localhost/api/images/${flashcard.back_image_key}`}/>
+                              <div className="editorDropzoneContainerWithImage">
+                                <Dropzone 
+                                  maxFiles={1}
+                                  maxSize={10000000} // 10MB
+                                  accept={['image/jpeg', 'image/png', 'image/jpg']}
+                                  onDropAccepted={acceptedFiles => handleFileUpload(acceptedFiles, flashcard, false)}
+                                >
+                                  {({getRootProps, getInputProps}) => (
+                                    <section >
+                                      <div {...getRootProps()}>
+                                        <input {...getInputProps()} />
+                                        <p className="dropzone">Upload a different image (Optional)</p>
+                                      </div>
+                                    </section>
+                                  )}
+                                </Dropzone>
+                              </div>
+                            </>
                               :
                               <div className="dropzoneContainer">
                                 <Dropzone 
@@ -255,7 +346,20 @@ export default function CollectionCreator() {
                 startIcon={<DoneOutlineIcon />}
                 onClick={handleSubmit}
               >
-                Submit
+                Update
+              </Button>
+              
+            </div>
+            <div>
+              <Button
+                variant="contained"
+                color="secondary"
+                size="large"
+                style={{color:"white", borderRadius:"10%", marginTop:"30px"}}
+                startIcon={<DoneOutlineIcon />}
+                onClick={handleDelete}
+              >
+                Delete
               </Button>
             </div>
         </div>

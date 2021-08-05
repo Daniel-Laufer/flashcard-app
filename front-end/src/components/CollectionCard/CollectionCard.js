@@ -13,6 +13,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import "./CollectionCard.css"
 import StarRating from '../StarRating/StarRating';
 import { useHistory } from 'react-router-dom';
+import Divider from '@material-ui/core/Divider';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -57,9 +58,10 @@ export default function CollectionCard({collection}) {
         <Card className={classes.card}>
 
           <CardContent className={classes.cardContent}>
-            <Typography gutterBottom variant="h6" component="h4">
+            <Typography className="cardTitle" gutterBottom variant="h6" component="h4">
               {collection.title}
             </Typography>
+            <Divider variant="left" style={{"margin-bottom":"10px"}}/>
             <Typography>
               Created by: <strong>{collection.username}</strong><br/>
               Rating: 
@@ -72,8 +74,8 @@ export default function CollectionCard({collection}) {
               View
             </Button>
             {
-              localStorage.getItem("user_id") && localStorage.getItem("user_id") === collection.user_id ? 
-              <Button size="small" color="primary">
+              localStorage.getItem("user_id") && collection.user_id && localStorage.getItem("user_id") === collection.user_id.toString() ? 
+              <Button onClick={() => history.push(`/collection/edit/${collection.id}`)} size="small" color="primary">
                 Edit
               </Button>
               :

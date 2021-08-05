@@ -1,10 +1,11 @@
-
 const express = require("express");
 const cors = require("cors");
 
 // express app set up
 const app = express();
 app.use(express.json());
+
+
 
 
 
@@ -15,12 +16,13 @@ require("./misc/swagger-docs-setup")(app);
 const authRoutes = require("./routes/Auth");
 const flashcardCollectionRoutes = require("./routes/Collections");
 const flashcardRoutes = require("./routes/Flashcards");
-
+const imageRoutes = require("./routes/Images");
 
 // hooking up the routes 
 app.use("/user", authRoutes);
 app.use("/", flashcardCollectionRoutes);
 app.use("/", flashcardRoutes);
+app.use("/", imageRoutes);
 
 app.use(cors());
 

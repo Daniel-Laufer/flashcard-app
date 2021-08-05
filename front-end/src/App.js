@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import CollectionDisplay from './components/CollectionDisplay/CollectionDisplay';
 import CollectionCreator from './components/CollectionCreator/CollectionCreator';
 import CollectionViewer from './components/CollectionViewer/CollectionViewer';
+import CollectionEditor from './components/CollectionEditor/CollectionEditor';
 
 
 
@@ -22,6 +23,9 @@ function App() {
           </Route>   
           <Route path="/createNewCollection">
             <CollectionCreator/>
+          </Route> 
+          <Route path="/collection/edit/:id">
+            <CollectionEditor/>
           </Route> 
           <Route path="/collection/:id">
             <CollectionViewer/>
