@@ -189,7 +189,7 @@
             "tags": [
               "flashcard"
             ],
-            "summary": "retrieves a specific flashcard collection that has an id of <collectionId>",
+            "summary": "retrieves details about a specific flashcard collection that has an id of <collectionId>",
             "parameters": [
               {
                 "name": "authorization",
@@ -262,6 +262,54 @@
               }
             }
           }
+      },
+      "/flashcard_collections/{collectionId}/rating": {
+        "put": {
+          "tags": [
+            "flashcard"
+          ],
+          "summary": "update the rating of the collection that has an id of <collectionId>",
+          "parameters": [
+            {
+              "name": "authorization",
+              "in": "header",
+              "description": "Authorization token",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "collectionId",
+              "in": "path",
+              "description": "ID of the flashcard collection",
+              "required": true,
+              "type": "integer",
+              "format": "int64"
+            },
+            {
+              "name": "rating",
+              "in": "body",
+              "description": "a new rating (out of 5) to modify this flashcard collection's current rating",
+              "required": true,
+              "type": "integer",
+              "example": 4,
+              "format": "int64"
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "successful update of resource"
+            },
+            "400": {
+                "description": "invalid/bad/missing data in request"
+            },
+            "401": {
+                "description": "unauthorized"
+            },
+            "500": {
+                "description": "failed to insert into db due to failed constraint or an internal server error occurred"
+            }
+          }
+        }
       },
       "/flashcard_collections/{flashcard_collection_id}/flashcards": {
         "post": {

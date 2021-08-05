@@ -2,6 +2,17 @@
     padding:50px;
 }
 
+.cardImage{
+    display: block;
+    width: 70px;
+    min-height: 100px;
+    min-width: 100px;
+    max-height: 200px;
+    max-width: 200px;
+
+    margin: 20px auto;
+}
+
 
 .collectionDetailsCreator{
     display: flex;
@@ -65,10 +76,10 @@
 
 .cardContainer > .MuiFormControl-root{
     width: 90% !important;
-    position: absolute !important;
-    bottom:55px;
-    left: 50%;
-    transform: translate(-50%, 0);
+    /* position: absolute !important; */
+    /* bottom:55px; */
+    /* left: 50%; */
+    /* transform: translate(-50%, 0); */
     
     
 
@@ -76,10 +87,11 @@
 
 .cardQuestionHeader{
     width: 90%;
-    position: absolute !important;
-    top:75px;
-    left: 50%;
-    transform: translate(-50%, 0);
+    margin-top: 50px;
+    /* position: absolute !important; */
+    /* top:75px; */
+    /* left: 50%; */
+    /* transform: translate(-50%, 0); */
 }
 
 
@@ -96,14 +108,11 @@
     width:80%;
     margin:auto;
     margin-left:35px;
-    left:0px;
-    position: absolute;
+
     border: 2px solid #324199;
     /* background-color: lightgray; */
-    padding: 5px;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    margin-bottom: 10px;
-    top:80px;
+    padding: 5px 8px;
+    /* margin-bottom: 10px; */
+    /* top:80px; */
     border-radius: 25px;;
 }

@@ -24,8 +24,8 @@ CREATE TABLE flashcard(
   collection_id INT NOT NULL REFERENCES flashcard_collection(id) ON DELETE CASCADE,
   front_text TEXT NOT NULL,
   back_text TEXT NOT NULL,
-  front_image_url TEXT,
-  back_image_url TEXT,
+  front_image_key TEXT,
+  back_image_key TEXT,
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMP NOT NULL DEFAULT NOW() 
 );

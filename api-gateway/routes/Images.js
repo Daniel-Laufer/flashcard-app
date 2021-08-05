@@ -32,26 +32,25 @@ const download_image = (imageKey) => {
     Key: imageKey,
     Bucket: process.env.AWS_BUCKET_NAME,
   }
-  console.log(params);
   return s3.getObject(params).createReadStream();
 }
 
 
-
+//
 
 var upload = multer({ dest: 'uploads/' })
   
-router.post('/images', [upload.single('image')], async (req, res) => {
+router.post('/images', [authorize, upload.single('image')], async (req, res) => {
     const image = req.file;
     try{
       const result = await upload_image(image);
-      res.status(201).send({"downloadImageRoute": `/images/${result.key}`})
+      res.status(201).send({"imageKey": result.key})
     }
     catch (err){
       console.log(err);
       return res.status(500).send("error uploading image to s3.")
     }
-    
+    //
   });
 
 
@@ -62,7 +61,6 @@ router.get("/images/:key", async (req, res) => {
     readStream.pipe(res);
   }
   catch (err){
-    console.log(err);
     return res.status(500).send("error uploading image to s3.")
   }
 });
