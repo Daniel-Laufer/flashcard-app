@@ -161,7 +161,7 @@ export default function CollectionCreator() {
                           />
                           {
                             flashcard.front_image_key ?
-                              <img className={"cardImage"} src={`api/images/${flashcard.front_image_key}`}/>
+                              <img className={"cardImage"} src={`http://localhost/api/images/${flashcard.front_image_key}`}/>
                               // <img className={"cardImage"} src={`api/images/edc4e4837d21daac6e654e53f460b277`}/>
                               :
                               <div className="dropzoneContainer">
@@ -207,7 +207,7 @@ export default function CollectionCreator() {
                           {/*                                   maxSize={10000000} // 10MB */}
                           {
                             flashcard.back_image_key ?
-                              <img className={"cardImage"} src={`api/images/${flashcard.back_image_key}`}/>
+                              <img className={"cardImage"} src={`http://localhost/api/images/${flashcard.back_image_key}`}/>
                               // <img className={"cardImage"} src={`api/images/edc4e4837d21daac6e654e53f460b277`}/>
                               :
                               <div className="dropzoneContainer">

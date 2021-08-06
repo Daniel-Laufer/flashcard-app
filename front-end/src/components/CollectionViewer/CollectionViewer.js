@@ -140,7 +140,7 @@ export default function CollectionViewer() {
                                   <div className>
                                     <h1 className="flashcardViewerTextWithImage">{flashcard.front_text}</h1>
                                     <div className="cardViewerImageContainer">
-                                      <img  className="cardViewerImage" src={`https://localhost/api/images/${flashcard.front_image_key}`}/>
+                                      <img  className="cardViewerImage" src={`http://localhost/api/images/${flashcard.front_image_key}`}/>
                                     </div>
                                   </div>
                                   :
@@ -172,7 +172,7 @@ export default function CollectionViewer() {
                                   <div>
                                     <h1 className="flashcardViewerTextWithImage">{flashcard.back_text}</h1>
                                     <div className="cardViewerImageContainer">
-                                      <img  className="cardViewerImage" src={`https://localhost/api/images/${flashcard.back_image_key}`}/>
+                                      <img  className="cardViewerImage" src={`http://localhost/api/images/${flashcard.back_image_key}`}/>
                                     </div>
                                   </div>
                                   :
