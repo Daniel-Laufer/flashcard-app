@@ -147,7 +147,7 @@ export default function LogInPage() {
           {
             errorLoggingIn || successLoggingIn ? (
               <Alert severity={errorLoggingIn ? "error": "success"}>
-                This is an error alert — check it out!
+                {errorLoggingIn ? "Error logging in! ": "Success!"}
               </Alert>
             ) : null
           }

@@ -150,7 +150,7 @@ export default function RegistrationPage() {
           {
             errorRegistering || successRegistering ? (
               <Alert severity={errorRegistering ? "error": "success"}>
-                This is an error alert — check it out!
+                {errorRegistering ? "Error! ": "Success!"}
               </Alert>
             ) : null
           }
