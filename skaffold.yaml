@@ -11,7 +11,7 @@ build:
     push: false
   # images that skaffold will build, and will manage any containers built from this image.
   artifacts:
-    - image: lauferdaniel/auth-server
+    - image: lauferdaniel/flashcard-app-auth-server
       context: auth-server
       docker:
         dockerfile: Dockerfile.dev
@@ -19,7 +19,7 @@ build:
         manual:
           - src: "*.js" # anytime a js file is updated, move it to the container!
             dest: . # where the files should be synced to inside the container. note: If the destination is a relative path, an absolute path will be inferred by prepending the path with the container’s WORKDIR. So in this case it will sync files with the /app directory in this container.
-    - image: lauferdaniel/api-gateway
+    - image: lauferdaniel/flashcard-app-api-gateway
       context: api-gateway
       docker:
         dockerfile: Dockerfile.dev
@@ -27,7 +27,7 @@ build:
         manual:
           - src: "*.js" # anytime a js file is updated, move it to the container!
             dest: . # where the files should be synced to inside the container. note: If the destination is a relative path, an absolute path will be inferred by prepending the path with the container’s WORKDIR. So in this case it will sync files with the /app directory in this container.
-    - image: lauferdaniel/rest-api-server
+    - image: lauferdaniel/flashcard-app-rest-api-server
       context: rest-api-server
       docker:
         dockerfile: Dockerfile.dev
@@ -35,7 +35,7 @@ build:
         manual:
           - src: "*.js" # anytime a js file is updated, move it to the container!
             dest: . # where the files should be synced to inside the container. note: If the destination is a relative path, an absolute path will be inferred by prepending the path with the container’s WORKDIR. So in this case it will sync files with the /app directory in this container.
-    - image: lauferdaniel/front-end-server
+    - image: lauferdaniel/flashcard-app-front-end
       context: front-end
       docker:
         dockerfile: Dockerfile.dev

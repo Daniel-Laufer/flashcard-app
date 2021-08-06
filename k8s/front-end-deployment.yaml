@@ -16,7 +16,7 @@ spec:
     spec: 
       containers:
         - name: client
-          image: lauferdaniel/front-end-server
+          image: lauferdaniel/flashcard-app-front-end
           ports:
             - containerPort: 3000 # expose port 3000 
           env:

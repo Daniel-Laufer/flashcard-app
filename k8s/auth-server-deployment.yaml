@@ -19,8 +19,7 @@ spec:
     spec:
       containers:
         - name: auth-server # name for a container inside this pod
-          image: lauferdaniel/auth-server
-          imagePullPolicy: Never
+          image: lauferdaniel/flashcard-app-auth-server
           ports:
             - containerPort: 5000 # exposing port 5000 on container inside pod
           env:
