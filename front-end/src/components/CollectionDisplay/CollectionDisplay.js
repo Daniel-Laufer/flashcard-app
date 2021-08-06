@@ -96,7 +96,7 @@ export default function CollectionDisplay() {
               Flashcard Collections
             </Typography>
             <Typography variant="h5" align="center" color="textSecondary" paragraph>
-              Here are some collections of flashcards that other users have created! Feel free to take a look at any that intrest you!
+              Here are some collections of flashcards that users have created. Feel free to take a look at any that intrest you!
             </Typography>
             <div className={classes.heroButtons}>
               <Grid container spacing={2} justifyContent="center">
