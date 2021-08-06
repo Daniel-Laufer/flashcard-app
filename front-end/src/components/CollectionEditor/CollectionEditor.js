@@ -78,12 +78,13 @@ export default function CollectionEditor() {
           flashcards: flashcardData
         }   
         
-        axios.put(`api/flashcard_collections/${id}`, payload, config)
+        axios.put(`/api/flashcard_collections/${id}`, payload, config)
           .then((res) => {
             setTimeout(() => history.push("/"), 800);
           })
           .catch((err) => {
-            if(err.response.status == 401){
+           
+            if(err.response && err.response.status == 401){
               localStorage.removeItem("auth-token");
               localStorage.removeItem("user_id");
               return setTimeout(() => history.push("/login"), 800);
