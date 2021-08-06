@@ -4,12 +4,7 @@
 
 .cardImage{
     display: block;
-    width: 70px;
-    min-height: 100px;
-    min-width: 100px;
-    max-height: 200px;
-    max-width: 200px;
-
+    height:150px;
     margin: 20px auto;
 }
 
