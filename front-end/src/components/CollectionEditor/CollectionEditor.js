@@ -216,7 +216,7 @@ export default function CollectionEditor() {
                           {
                             flashcard.front_image_key ?
                             <>
-                              <img className={"editorCardImageWithDropZone"} src={`http://localhost/api/images/${flashcard.front_image_key}`}/>
+                              <img className={"editorCardImageWithDropZone"} src={`/api/images/${flashcard.front_image_key}`}/>
                               <div className="editorDropzoneContainerWithImage">
                                 <Dropzone 
                                   maxFiles={1}
@@ -281,7 +281,7 @@ export default function CollectionEditor() {
                           {
                             flashcard.back_image_key ?
                             <>
-                              <img className={"editorCardImageWithDropZone"} src={`http://localhost/api/images/${flashcard.back_image_key}`}/>
+                              <img className={"editorCardImageWithDropZone"} src={`/api/images/${flashcard.back_image_key}`}/>
                               <div className="editorDropzoneContainerWithImage">
                                 <Dropzone 
                                   maxFiles={1}
