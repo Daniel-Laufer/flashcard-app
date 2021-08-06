@@ -18,9 +18,8 @@ import "./LogInPage.css";
 
 
 import axios from 'axios';
-axios.defaults.baseURL = "https://localhost/"; 
+// axios.defaults.baseURL = "localhost/"; 
 
-console.log(axios.defaults.transformRequest);
 
 
 
@@ -147,7 +146,7 @@ export default function LogInPage() {
           {
             errorLoggingIn || successLoggingIn ? (
               <Alert severity={errorLoggingIn ? "error": "success"}>
-                {errorLoggingIn ? "Error logging in! ": "Success!"}
+                {errorLoggingIn ? "Error loggin in! ": "Success!"}
               </Alert>
             ) : null
           }
