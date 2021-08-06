@@ -146,7 +146,7 @@ export default function CollectionEditor() {
        
         const formData = new FormData();
         formData.append("image", files[0]);
-        axios.post("api/images", formData, { headers: {'Content-Type': 'multipart/form-data', "authorization": `Bearer ${localStorage.getItem("auth-token")}`}})
+        axios.post("/api/images", formData, { headers: {'Content-Type': 'multipart/form-data', "authorization": `Bearer ${localStorage.getItem("auth-token")}`}})
           .then((result) => {
             const otherFlashcards = flashcardData.filter(item => item.id !== flashcard.id);
             let updatedFlashcard;
