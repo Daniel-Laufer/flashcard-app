@@ -167,7 +167,6 @@ export default function CollectionCreator() {
                               <div className="dropzoneContainer">
                                 <Dropzone 
                                   maxFiles={1}
-                                  maxSize={10000000} // 10MB
                                   accept={['image/jpeg', 'image/png', 'image/jpg']}
                                   onDropAccepted={acceptedFiles => handleFileUpload(acceptedFiles, flashcard, true)}
                                 >
@@ -205,6 +204,7 @@ export default function CollectionCreator() {
                           value={flashcard.back_text}
                           onChange={(event) => handleUpdatingFlashcardDataText(event, flashcard)}
                           />
+                          {/*                                   maxSize={10000000} // 10MB */}
                           {
                             flashcard.back_image_key ?
                               <img className={"cardImage"} src={`api/images/${flashcard.back_image_key}`}/>
@@ -213,7 +213,6 @@ export default function CollectionCreator() {
                               <div className="dropzoneContainer">
                                 <Dropzone 
                                   maxFiles={1}
-                                  maxSize={10000000} // 10MB
                                   accept={['image/jpeg', 'image/png', 'image/jpg']}
                                   onDropAccepted={acceptedFiles => handleFileUpload(acceptedFiles, flashcard, false)}
                                 >

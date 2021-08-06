@@ -11,8 +11,10 @@
 .cardViewerImage{
     display: block;
     width: 100%;
-    max-width: 240px;
+    min-width: 280px;
+    max-height: 280px;
     margin: auto;
+    margin-left:-15px;
 }
 
 .flashcardViewerTextWithoutImage{

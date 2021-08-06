@@ -4,8 +4,32 @@ services:
 env:
   global:
     - SHA=$(git rev-parse HEAD)
+    - CLOUDSDK_CORE_DISABLE_PROMPTS=1 # configure GC CLI to disable prompts that ask for user input
 # creating images that will be used for testing
 before_install:
+  # 
+  # command we got from encrypting the service-account.json file 
+  # with the travis cli. It will retrieve it and decrypt it.
+  - openssl aes-256-cbc -K $encrypted_cb64ce276cc1_key -iv $encrypted_cb64ce276cc1_iv -in gcp-service-account.json.enc -out gcp-service-account.json -d  
+  
+  # download the gc sdk and install it locally on the travis instance 
+  - curl https://sdk.cloud.google.com | bash > /dev/null; 
+  
+  # apply some gcp sdk config to our travis shell
+  - source $HOME/google-cloud-sdk/path.bash.inc
+  
+  # install gcp's kubectl command
+  - gcloud components update kubectl
+
+  # authorize with google cloud
+  # note that it is important to run the openssl command to decrypt the 
+  # service-account.json.enc so you have access to the regular service-account.json file
+  - gcloud auth activate-service-account --key-file gcp-service-account.json
+
+  - gcloud config set project flashcard-app-322116 
+  - gcloud config set compute/zone us-east1-b
+  - gcloud container clusters get-credentials flashcard-app-k8s-cluster
+
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin # login travis into my docker account
   - docker build -t lauferdaniel/test-flashcard-app-front-end-react -f ./front-end/Dockerfile.dev ./front-end
   - docker build -t lauferdaniel/test-flashcard-app-api-gateway -f ./front-end/Dockerfile.dev ./api-gateway
