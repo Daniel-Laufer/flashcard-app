@@ -7,7 +7,7 @@ metadata:
 
   # configuring this service
   annotations: 
-    # use ingress-nginx specifically
+    # use the ingress-nginx controller that is already runnign in our cluster specifically
     kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/use-regex: "true"
     
