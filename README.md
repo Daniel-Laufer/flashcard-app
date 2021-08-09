@@ -41,7 +41,7 @@ I attached a gif below to show off this documentation.
 &nbsp;
 &nbsp;
 &nbsp;
-### Here is an overview of the cluster on GKE. 
+### Here is an overview of the cluster on GKE (please click the image to zoom in)
 ![Production GKE Cluster](https://github-readme-media.s3.amazonaws.com/prod_cluster.png)
 
   
