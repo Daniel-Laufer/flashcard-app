@@ -13,7 +13,7 @@ Click [here](https://youtu.be/7zHnE4n661M) to view the demo! It is important to 
 
 **Front-end:** React.js, Material-UI 
 
-**Back-end:** Kubernetes, Docker, PostgreSQL, Node.js, Express.js, aws-sdk for Node.js, Swagger API Documentation
+**Back-end:** Kubernetes, Docker, PostgreSQL, Node.js, Express.js, aws-sdk for Node.js, JWT, Swagger API Documentation
 
 **Local Development:** Skaffold, Docker Desktop
 
