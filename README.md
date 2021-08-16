@@ -36,14 +36,14 @@ I attached a gif below to show off this documentation.
 ## Development & Production Kubernetes Cluster Architecture Diagrams
 
 ### Here is an overview of the cluster that I used for development. (this is what is created each time I run the command *skaffold dev*)
-![Local Development Cluster](./planning/local_cluster.png)
+![Local Development Cluster](planning/local_cluster.png)
 &nbsp;
 &nbsp;
 &nbsp;
 &nbsp;
 
 ### Here is an overview of the cluster on GKE. 
-![Production GKE Cluster](./planning/prod_cluster.png)
+![Production GKE Cluster](planning/prod_cluster.png)
 
 Please click on the images to zoom in if needed.
 ## CI/CD Pipeline
