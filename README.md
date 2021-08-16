@@ -13,7 +13,7 @@ Click [here](https://youtu.be/7zHnE4n661M) to view the demo! It is important to 
 
 **Front-end:** React.js, Material-UI 
 
-**Back-end:** Kubernetes, Docker, Node.js, Express.js, aws-sdk for Node.js, Swagger API Documentation
+**Back-end:** Kubernetes, Docker, PostgreSQL, Node.js, Express.js, aws-sdk for Node.js, JWT, Swagger API Documentation
 
 **Local Development:** Skaffold, Docker Desktop
 
@@ -41,6 +41,7 @@ I attached a gif below to show off this documentation.
 &nbsp;
 &nbsp;
 &nbsp;
+
 ### Here is an overview of the cluster on GKE. 
 ![Production GKE Cluster](./planning/prod_cluster.png)
 
@@ -149,4 +150,4 @@ This *dramatically* speeds up the developement process as you don't need to cons
 
   
 
-After all of this, you will be able to acess the app at **https://localhost/**
+After all of this, you will be able to access the app at **https://localhost/**
