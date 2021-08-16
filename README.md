@@ -45,7 +45,7 @@ I attached a gif below to show off this documentation.
 ### Here is an overview of the cluster on GKE. 
 ![Production GKE Cluster](./planning/prod_cluster.png)
 
-  
+Please click on the images to zoom in if needed.
 ## CI/CD Pipeline
 
 I developed a CI/CD pipeline for this project using [Travis CI](https://travis-ci.org/). You can see everything involved with
@@ -71,7 +71,7 @@ and how the development workflow would look like using it.
 ## Run Locally
 
 This project wasn't meant to be run locally by other people, but you can definetely get it running on your computer with some effort on your behalf.
- Note that it will require you to set up a PostgreSQL RDS DB on AWS and an IAM policy that will grant this app programatic access to this aforementioned DB.
+ Note that it will require you to set up a publicly accessible PostgreSQL RDS DB on AWS and an IAM policy that will grant this app programatic access to this aforementioned DB.
 
 First, clone the project.
 ```bash
@@ -99,16 +99,16 @@ kubectl create secret generic postgres-secret \
     --from-literal=PG_PASSWORD=<password you defined for this db> \
     --from-literal=PG_DB=<the databse name>\
     --from-literal=PG_PORT=<the port the database is running on at that particular endpoint>
-
+&&
 kubectl create secret generic aws-user-credentials \
     --from-literal=AWS_BUCKET_REGION=<the region your S3 bucket is hosted in, ex. us-east-1>\
     --from-literal=AWS_BUCKET_NAME=<your S3 bucket name> \
     --from-literal=ACCESS_KEY=<an access key to an AWS IAM policy that has read/write permissions to this particular s3 bucket> \
     --from-literal=SECRET_ACCESS_KEY=<a secret access key to an AWS IAM policy that has read/write permissions to this particular s3 bucket>
-
+&&
 kubectl create secret generic jwt-secret \
     --from-literal=JWT_SECRET_KEY=<some random key to encrypt/decrypt the JWT auth tokens that the auth-server service uses>
-
+&&
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.47.0/deploy/static/provider/cloud/deploy.yaml
 ```
 This last command above there is to create the ingress-nginx controller in your cluster.
@@ -116,25 +116,19 @@ This last command above there is to create the ingress-nginx controller in your 
 
 Now to create all the necessary tables in the AWS RDS database, simply run the following:
 ```bash
-cd sql
 psql -h <your rds endpoint> -p <your rds port> -U <user name> <database name>
 
 ```
-type in your password and then run this command inside the posrgres CLI:
+type in your password and then run this command inside the posrgres CLI.
 ```bash
-\i re-create_tables.sql;
+\i ./sql/re-create_tables.sql;
 
 ```
-\
-Exit out of that postgres CLI and go back to your root project directory
 
-```bash
-cd ..
-```
 Starting up all the services/deployments can now be done with one simple command:
 
 ```bash
-  skaffold dev
+skaffold dev
 ```
 This will handle applying all the kubernetes .yaml files to the kubernetes cluster. 
 It will also automatically remove all the objects that it creates once 
