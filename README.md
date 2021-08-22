@@ -99,16 +99,19 @@ kubectl create secret generic postgres-secret \
     --from-literal=PG_PASSWORD=<password you defined for this db> \
     --from-literal=PG_DB=<the databse name>\
     --from-literal=PG_PORT=<the port the database is running on at that particular endpoint>
-&&
+```
+```bash
 kubectl create secret generic aws-user-credentials \
     --from-literal=AWS_BUCKET_REGION=<the region your S3 bucket is hosted in, ex. us-east-1>\
     --from-literal=AWS_BUCKET_NAME=<your S3 bucket name> \
     --from-literal=ACCESS_KEY=<an access key to an AWS IAM policy that has read/write permissions to this particular s3 bucket> \
     --from-literal=SECRET_ACCESS_KEY=<a secret access key to an AWS IAM policy that has read/write permissions to this particular s3 bucket>
-&&
+```
+```bash
 kubectl create secret generic jwt-secret \
     --from-literal=JWT_SECRET_KEY=<some random key to encrypt/decrypt the JWT auth tokens that the auth-server service uses>
-&&
+```
+```bash
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.47.0/deploy/static/provider/cloud/deploy.yaml
 ```
 This last command above there is to create the ingress-nginx controller in your cluster.
