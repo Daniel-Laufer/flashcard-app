@@ -1,7 +1,7 @@
 node_modules/
-planning/tricky_commands.txt
+*/tricky_commands.txt
 .DS_Store
-planning/user_management_server_structure.pages
+*/user_management_server_structure.pages
 
 
 # dependencies
