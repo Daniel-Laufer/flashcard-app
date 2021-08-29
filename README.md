@@ -26,7 +26,7 @@ Click [here](https://youtu.be/7zHnE4n661M) to view the demo! It is important to 
 The entirety of the documentation for the back-end APIs used in this project are written using
 [Swagger](https://swagger.io/). It can be viewed at **<base_url>/api/api-docs** (the "base_url"
 varies depending on where the application is actually running whether it be locally, on Google's servers, etc.).
-I attached a gif below to show off this documentation.
+I attached a gif below to show off this documentation. Please click the gif to zoom in.
 
 
 ![Swagger Docs Gif](./readme-images/swagger_docs.gif)
