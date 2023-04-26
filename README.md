@@ -19,20 +19,6 @@ Click [here](https://youtu.be/7zHnE4n661M) to view the demo! It is important to 
 
 **Deployment:**  Travis CI, Google Kubernetes Engine (GKE), AWS Relational Database Service (RDS), AWS Simple Storage Service (S3)
 
-  
-## API Reference
-
-
-The entirety of the documentation for the back-end APIs used in this project are written using
-[Swagger](https://swagger.io/). It can be viewed at **<base_url>/api/api-docs** (the "base_url"
-varies depending on where the application is actually running whether it be locally, on Google's servers, etc.).
-I attached a gif below to show off this documentation. Please click the gif to zoom in.
-
-
-![Swagger Docs Gif](./readme-images/swagger_docs.gif)
-&nbsp;
-
-
 ## Development & Production Kubernetes Cluster Architecture Diagrams
 
 ### Here is an overview of the cluster that I used for development. (this is what is created each time I run the command *skaffold dev*)
@@ -148,3 +134,17 @@ This *dramatically* speeds up the developement process as you don't need to cons
   
 
 After all of this, you will be able to access the app at **https://localhost/**
+
+
+## API Reference
+
+
+The entirety of the documentation for the back-end APIs used in this project are written using
+[Swagger](https://swagger.io/). It can be viewed at **<base_url>/api/api-docs** (the "base_url"
+varies depending on where the application is actually running whether it be locally, on Google's servers, etc.).
+I attached a gif below to show off this documentation. Please click the gif to zoom in.
+
+
+![Swagger Docs Gif](./readme-images/swagger_docs.gif)
+&nbsp;
+
